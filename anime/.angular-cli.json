@@ -1,0 +1,121 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "project": {
+    "name": "web3bwave"
+  },
+  "apps": [
+    {
+      "root": "src",
+      "outDir": "dist",
+      "assets": [
+        "assets",
+        "favicon.ico"
+      ],
+      "index": "index.html",
+      "main": "main.ts",
+      "polyfills": "polyfills.ts",
+      "test": "test.ts",
+      "tsconfig": "tsconfig.app.json",
+      "testTsconfig": "tsconfig.spec.json",
+      "prefix": "app",
+      "styles": [
+        "../node_modules/bootstrap/dist/css/bootstrap.min.css",
+        "../node_modules/font-awesome/css/font-awesome.min.css",
+        "../node_modules/toastr/build/toastr.min.css",
+        "../node_modules/gritter/css/jquery.gritter.css",
+        "../node_modules/animate.css/animate.min.css",
+        "../node_modules/icheck/skins/all.css",
+        "../node_modules/datatables.net-bs/css/dataTables.bootstrap.css",
+        "../node_modules/datatables.net-select-bs/css/select.bootstrap.css",
+        "../node_modules/sweetalert2/dist/sweetalert2.min.css",
+        "../node_modules/select2/dist/css/select2.min.css",
+        "../node_modules/summernote/dist/summernote.css",
+        "../node_modules/bootstrap-toggle/css/bootstrap-toggle.min.css",
+        "../node_modules/ng-pick-datetime/assets/style/picker.min.css",
+        "../node_modules/quill/dist/quill.snow.css",
+        "../node_modules/angular-star-rating/assets/scss/star-rating.scss",
+        "../node_modules/flag-icon-css/css/flag-icon.min.css",
+        "../src/assets/css/chosen.min.css",
+        "../src/assets/loader/HoldOn.min.css",
+        "../src/assets/css/style.css",
+        "styles.css"
+      ],
+      "scripts": [
+        "../node_modules/jquery/dist/jquery.min.js",
+        "../node_modules/tether/dist/js/tether.min.js",
+        "../node_modules/bootstrap/dist/js/bootstrap.min.js",
+        "../node_modules/toastr/build/toastr.min.js",
+        "../node_modules/gritter/js/jquery.gritter.min.js",
+        "../node_modules/metismenu/dist/metisMenu.min.js",
+        "../node_modules/jquery-slimscroll/jquery.slimscroll.min.js",
+        "../node_modules/flot/jquery.flot.js",
+        "../node_modules/jquery.flot.tooltip/js/jquery.flot.tooltip.min.js",
+        "../src/assets/js/jquery.flot.spline.js",
+        "../node_modules/flot/jquery.flot.pie.js",
+        "../node_modules/flot/jquery.flot.resize.js",
+        "../node_modules/peity/jquery.peity.min.js",
+        "../node_modules/pace-progress/pace.js",
+        "../node_modules/jquery-ui-dist/jquery-ui.min.js",
+        "../node_modules/jquery-sparkline/jquery.sparkline.min.js",
+        "../node_modules/chart.js/dist/Chart.min.js",
+        "../node_modules/icheck/icheck.min.js",
+        "../node_modules/datatables.net/js/jquery.dataTables.js",
+        "../node_modules/datatables.net-bs/js/dataTables.bootstrap.js",
+        "../node_modules/datatables.net-buttons/js/buttons.html5.js",
+        "../node_modules/datatables.net-buttons/js/buttons.print.js",
+        "../node_modules/datatables.net-buttons/js/dataTables.buttons.js",
+        "../node_modules/datatables.net-buttons-bs/js/buttons.bootstrap.js",
+        "../node_modules/datatables.net-select/js/dataTables.select.js",
+        "../node_modules/pdfmake/build/pdfmake.min.js",
+        "../node_modules/pdfmake/build/vfs_fonts.js",
+        "../node_modules/jszip/dist/jszip.min.js",
+        "../node_modules/sweetalert2/dist/sweetalert2.all.min.js",
+        "../node_modules/jquery-validation/dist/jquery.validate.min.js",
+        "../node_modules/select2/dist/js/select2.full.min.js",
+        "../node_modules/summernote/dist/summernote.min.js",
+        "../node_modules/jspdf/dist/jspdf.min.js",
+        "../node_modules/html2canvas/dist/html2canvas.min.js",
+        "../node_modules/bootstrap-toggle/js/bootstrap-toggle.min.js",
+        "../node_modules/chosen-npm/public/chosen.jquery.min.js",
+        "../node_modules/quill/dist/quill.min.js",
+        "../src/assets/loader/HoldOn.min.js",
+        "../src/assets/js/componentes.js",
+        "../src/assets/js/inspinia.js",
+        "../node_modules/jquery-mask-plugin/dist/jquery.mask.min.js"
+      ],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts"
+      }
+    }
+  ],
+  "e2e": {
+    "protractor": {
+      "config": "./protractor.conf.js"
+    }
+  },
+  "lint": [
+    {
+      "project": "src/tsconfig.app.json",
+      "exclude": "**/node_modules/**"
+    },
+    {
+      "project": "src/tsconfig.spec.json",
+      "exclude": "**/node_modules/**"
+    },
+    {
+      "project": "e2e/tsconfig.e2e.json",
+      "exclude": "**/node_modules/**"
+    }
+  ],
+  "test": {
+    "karma": {
+      "config": "./karma.conf.js"
+    }
+  },
+  "defaults": {
+    "styleExt": "css",
+    "component": {}
+  }
+}

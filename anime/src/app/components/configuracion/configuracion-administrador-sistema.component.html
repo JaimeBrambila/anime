@@ -1,0 +1,201 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+	<div class="row">
+		<div class="col-lg-12">
+			<h2>Desarrollo</h2>
+			<div class="row">
+				<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">
+					<div class="widget style1" [class.navy-bg]="formaSistema.status=='VALID'" [class.red-bg]="formaSistema.status=='INVALID'"
+					 [class.yellow-bg]="formaSistema.status=='INVALID'">
+						<div class="row">
+							<div class="col-xs-4">
+								<span>Título</span>
+								<h4 class="font-bold">{{formaSistema.status}}</h4>
+							</div>
+							<div class="col-xs-8 text-right">
+								<button type="button" class="btn btn-xs" [class.btn-info]="formaSistema.status=='VALID'" [class.btn-danger]="formaSistema.status=='INVALID'"
+								 [class.btn-warning]="formaSistema.status=='PENDING'" (click)="verForma()">
+									<i class="fa fa-eye"></i>&nbsp;Ver Forma</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">
+					<div class="widget style1" [class.navy-bg]="formaSerie.status=='VALID'" [class.red-bg]="formaSerie.status=='INVALID'" [class.yellow-bg]="formaSerie.status=='INVALID'">
+						<div class="row">
+							<div class="col-xs-4">
+								<span>Serie</span>
+								<h4 class="font-bold">{{formaSerie.status}}</h4>
+							</div>
+							<div class="col-xs-8 text-right">
+								<button type="button" class="btn btn-xs" [class.btn-info]="formaSerie.status=='VALID'" [class.btn-danger]="formaSerie.status=='INVALID'"
+								 [class.btn-warning]="formaSerie.status=='PENDING'" (click)="verFormaSerie()">
+									<i class="fa fa-eye"></i>&nbsp;Ver Forma</button>
+							</div>
+						</div>
+					</div>
+				</div> -->
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<p class="text-right" style="margin-top: 10px; margin-bottom: -50px;">
+				<button class="btn btn-success " type="button" (click)="guardar()">
+					<i class="fa fa-floppy-o"></i>&nbsp;Guardar</button>
+				<button class="btn btn-danger " type="button" routerLink="/app/panel-control">
+					<i class="fa fa-step-backward"></i>&nbsp;Salir</button>
+			</p>
+			<h2>Configuración</h2>
+			<ol class="breadcrumb">
+				<li>
+					Opciones del Administrador del Sistema
+				</li>
+			</ol>
+		</div>
+	</div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="ibox float-e-margins">
+				<div class="ibox-content">
+
+
+					<ul class="nav nav-tabs">
+						<li class="active">
+							<a data-toggle="tab" href="#tabSistema" aria-expanded="true">
+								<span [class.text-danger]="formaSistema.invalid">
+									<i *ngIf="!formaSistema.valid" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+									Sistema
+								</span>
+							</a>
+						</li>
+						<li>
+							<a data-toggle="tab" href="#tabBaseDatos" aria-expanded="true">
+								<span [class.text-danger]="formaBaseDatos.invalid">
+									<i *ngIf="!formaBaseDatos.valid" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+									Base de Datos
+								</span>
+							</a>
+						</li>
+						<li>
+							<a data-toggle="tab" href="#tabDesarrollo" aria-expanded="true">
+								<span [class.text-danger]="formaDesarrollo.invalid">
+									<i *ngIf="!formaDesarrollo.valid" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+									Desarrollo
+								</span>
+							</a>
+						</li>
+					</ul>
+
+					<div class="tab-content">
+
+						<div id="tabSistema" class="tab-pane active">
+							<div class="panel-body">
+								<form #formaSistema="ngForm">
+									<div class="row">
+										<div class="col-md-12">
+											<fieldset *ngIf="config">
+												<legend>Sistema</legend>
+												<div class="row">
+													<!-- <div class="form-group col-md-6">
+														<label class="control-label">Redireccionar despues de una excepción</label>
+														<br>
+														<input id="selectorDesarrolloRedireccionarExcepcion" type="checkbox" checked data-toggle="toggle" data-on="Si" data-off="No"
+														 data-onstyle="success" data-offstyle="danger">
+													</div>
+													<div class="form-group col-md-6">
+														<label class="control-label">Ver menus de desarrollo</label>
+														<br>
+														<input id="selectorDesarrolloMenu" type="checkbox" checked data-toggle="toggle" data-on="Si" data-off="No" data-onstyle="success"
+														 data-offstyle="danger">
+													</div> -->
+												</div>
+											</fieldset>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+
+						<div id="tabBaseDatos" class="tab-pane">
+							<div class="panel-body">
+								<form #formaBaseDatos="ngForm">
+									<div class="row">
+										<div class="col-md-12">
+											<fieldset *ngIf="config">
+												<legend>Base de datos</legend>
+												<div class="row">
+														<div class="form-group col-md-12">
+															<button type="button" class="btn btn-info" (click)="inicializacion.inicializarBaseDatos()">
+																<i class="fa fa-eye"></i>&nbsp;Inicializar Base de Datos</button>
+														</div>
+														<div class="form-group col-md-12">
+															<button type="button" class="btn btn-info" (click)="inicializacion.inicializarPaises()">
+																<i class="fa fa-eye"></i>&nbsp;Inicializar Paises</button>
+														</div>
+														<div class="form-group col-md-12">
+															<button type="button" class="btn btn-info" (click)="inicializacion.inicializarCreadores()">
+																<i class="fa fa-eye"></i>&nbsp;Inicializar Creadores</button>
+														</div>
+														<div class="form-group col-md-12">
+															<button type="button" class="btn btn-info" (click)="inicializacion.inicializarCronologias()">
+																<i class="fa fa-eye"></i>&nbsp;Inicializar Cronologias</button>
+														</div>
+														<div class="form-group col-md-12">
+															<button type="button" class="btn btn-info" (click)="inicializacion.inicializarFansubs()">
+																<i class="fa fa-eye"></i>&nbsp;Inicializar Fansubs</button>
+														</div>
+														<div class="form-group col-md-12">
+															<button type="button" class="btn btn-info" (click)="inicializacion.inicializarGeneros()">
+																<i class="fa fa-eye"></i>&nbsp;Inicializar Generos</button>
+														</div>
+														<div class="form-group col-md-12">
+															<button type="button" class="btn btn-info" (click)="inicializacion.inicializarTemas()">
+																<i class="fa fa-eye"></i>&nbsp;Inicializar Temas</button>
+														</div>
+												</div>
+											</fieldset>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+
+						<div id="tabDesarrollo" class="tab-pane">
+							<div class="panel-body">
+								<form #formaDesarrollo="ngForm">
+									<div class="row">
+										<div class="col-md-12">
+											<fieldset *ngIf="config">
+												<legend>Desarrollo</legend>
+												<div class="row">
+													<div class="form-group col-md-6">
+														<label class="control-label">Redireccionar despues de una excepción</label>
+														<br>
+														<input id="selectorDesarrolloRedireccionarExcepcion" type="checkbox" checked data-toggle="toggle" data-on="Si" data-off="No"
+														 data-onstyle="success" data-offstyle="danger">
+													</div>
+													<div class="form-group col-md-6">
+														<label class="control-label">Ver menus de desarrollo</label>
+														<br>
+														<input id="selectorDesarrolloMenu" type="checkbox" checked data-toggle="toggle" data-on="Si" data-off="No" data-onstyle="success"
+														 data-offstyle="danger">
+													</div>
+												</div>
+											</fieldset>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

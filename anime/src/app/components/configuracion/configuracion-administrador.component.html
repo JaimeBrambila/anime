@@ -1,0 +1,466 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+	<div *ngIf="desarrolloVerMenu" class="col-lg-12">
+		<p class="text-right" style="margin-top: 10px; margin-bottom: -50px;">
+			Estatus: <span *ngIf="forma" class="label label-info ">{{forma.status}}</span>
+			<button class="btn btn-xs btn-info " type="button" (click)="verForma()"><i class="fa fa-eye"></i>&nbsp;Ver Forma</button>
+		</p>
+		<h2>Desarrollo</h2>
+	</div>
+	<div class="col-lg-12">
+		<p class="text-right" style="margin-top: 10px; margin-bottom: -50px;">
+			<button class="btn btn-success " type="button" (click)="guardar()" [disabled]="formularioEmpresa.invalid || formularioFacturacion.invalid || formularioCorreo.invalid || formularioMonedas.invalid">
+                <i class="fa fa-floppy-o"></i>&nbsp;Guardar
+            </button>
+			<button  *ngIf="cognito.sistemaInicializado" class="btn btn-danger " type="button" routerLink="/app/panel-control"><i class="fa fa-step-backward"></i>&nbsp;Salir</button>
+		</p>
+		<h2>Configuración</h2>
+		<ol class="breadcrumb">
+			<li>
+				Opciones del Administrador
+			</li>
+		</ol>
+	</div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="ibox float-e-margins">
+				<div class="ibox-content">
+
+					<ul class="nav nav-tabs">
+						<li class="active">
+							<a data-toggle="tab" href="#tabEmpresa" aria-expanded="true">
+                                <span [class.text-danger]="formularioEmpresa.invalid">
+                                    <i *ngIf="formularioEmpresa.invalid" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                    Empresa
+                                </span>
+                            </a>
+						</li>
+						<li>
+							<a data-toggle="tab" href="#tabFacturacion" aria-expanded="true">
+                                <span [class.text-danger]="formularioFacturacion.invalid">
+                                    <i *ngIf="formularioFacturacion.invalid" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                    Facturación
+                                </span>
+                            </a>
+						</li>
+						<li>
+							<a data-toggle="tab" href="#tabCorreo" aria-expanded="true">
+                                <span [class.text-danger]="formularioCorreo.invalid">
+                                    <i *ngIf="formularioCorreo.invalid" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                    Correo
+                                </span>
+                            </a>
+						</li>
+						<li>
+							<a data-toggle="tab" href="#tabMonedas" aria-expanded="true">
+                                <span [class.text-danger]="formularioMonedas.invalid">
+                                    <i *ngIf="formularioMonedas.invalid" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                    Monedas
+                                </span>
+                            </a>
+						</li>
+					</ul>
+
+					<div class="tab-content">
+
+						<div id="tabEmpresa" class="tab-pane active">
+							<div class="panel-body">
+								<form #formularioEmpresa="ngForm">
+									<div class="row">
+										<div class="col-md-12">
+											<fieldset *ngIf="configuracion">
+												<legend>General</legend>
+												<div class="row">
+													<div class="form-group col-md-6" [class.has-error]="empresaNombreComercial.errors?.required && empresaNombreComercial.dirty">
+														<label class="control-label">Nombre comercial</label>
+														<input type="text" class="form-control" required placeholder="Nombre comercial" name="empresaNombreComercial" [(ngModel)]="configuracion.empresa.nombreComercial"
+														 #empresaNombreComercial="ngModel" />
+														<div class="help-block" *ngIf="empresaNombreComercial.errors?.required">
+															Este campo es requerido
+														</div>
+													</div>
+													<div class="form-group col-md-6" [class.has-error]="empresaRazonSocial.errors?.required && empresaRazonSocial.dirty">
+														<label class="control-label">Razon social</label>
+														<input type="text" class="form-control" required placeholder="Razon social" name="empresaRazonSocial" [(ngModel)]="configuracion.empresa.razonSocial"
+														 #empresaRazonSocial="ngModel" />
+														<div class="help-block" *ngIf="empresaRazonSocial.errors?.required">
+															Este campo es requerido
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="form-group col-md-12" [class.has-error]="empresaPaginaWeb.errors?.required && empresaPaginaWeb.dirty">
+														<label class="control-label">Página Web</label>
+														<input type="text" class="form-control" required placeholder="Página Web" name="empresaPaginaWeb" [(ngModel)]="configuracion.empresa.paginaWeb"
+														 #empresaPaginaWeb="ngModel" />
+														<div class="help-block" *ngIf="empresaPaginaWeb.errors?.required">
+															Este campo es requerido
+														</div>
+													</div>
+												</div>
+												<legend>Domicilio</legend>
+												<div class="row">
+													<div class="form-group col-md-6" [class.has-error]="empresaDomicilioCalle.errors?.required && empresaDomicilioCalle.dirty">
+														<label class="control-label">Calle</label>
+														<input type="text" class="form-control" required placeholder="Calle" name="empresaDomicilioCalle" [(ngModel)]="configuracion.empresa.domicilio.calle"
+														 #empresaDomicilioCalle="ngModel" />
+														<div class="help-block" *ngIf="empresaDomicilioCalle.errors?.required">
+															Este campo es requerido
+														</div>
+													</div>
+													<div class="form-group col-md-3" [class.has-error]="empresaDomicilioNumeroExterior.errors?.required && empresaDomicilioNumeroExterior.dirty">
+														<label class="control-label">No. Exterior</label>
+														<input type="text" class="form-control" required placeholder="No. Exterior" name="empresaDomicilioNumeroExterior" [(ngModel)]="configuracion.empresa.domicilio.numeroExterior"
+														 #empresaDomicilioNumeroExterior="ngModel" />
+														<div class="help-block" *ngIf="empresaDomicilioNumeroExterior.errors?.required">
+															Este campo es requerido
+														</div>
+													</div>
+													<div class="form-group col-md-3" [class.has-error]="empresaDomicilioNumeroInterior.errors?.required && empresaDomicilioNumeroInterior.dirty">
+														<label class="control-label">No. Interior</label>
+														<input type="text" class="form-control" placeholder="No. Interior" name="empresaDomicilioNumeroInterior" [(ngModel)]="configuracion.empresa.domicilio.numeroInterior"
+														 #empresaDomicilioNumeroInterior="ngModel" />
+													</div>
+													<div class="form-group col-md-6" [class.has-error]="empresaDomicilioColonia.errors?.required && empresaDomicilioColonia.dirty">
+														<label class="control-label">Colonia</label>
+														<input type="text" class="form-control" required placeholder="Colonia" name="empresaDomicilioColonia" [(ngModel)]="configuracion.empresa.domicilio.colonia"
+														 #empresaDomicilioColonia="ngModel" />
+														<div class="help-block" *ngIf="empresaDomicilioColonia.errors?.required">
+															Este campo es requerido
+														</div>
+													</div>
+													<div class="form-group col-md-3" [class.has-error]="empresaDomicilioCodigoPostal.errors?.required && empresaDomicilioCodigoPostal.dirty">
+														<label class="control-label">Codigo postal</label>
+														<input type="text" class="form-control" required placeholder="Codigo postal" name="empresaDomicilioCodigoPostal" [(ngModel)]="configuracion.empresa.domicilio.codigoPostal"
+														 #empresaDomicilioCodigoPostal="ngModel" />
+														<div class="help-block" *ngIf="empresaDomicilioCodigoPostal.errors?.required">
+															Este campo es requerido
+														</div>
+													</div>
+													<div class="form-group col-md-3" [class.has-error]="empresaDomicilioTelefono.errors?.required && empresaDomicilioTelefono.dirty">
+														<label class="control-label">Teléfono</label>
+														<input type="text" class="form-control" placeholder="Teléfono" name="empresaDomicilioTelefono" [(ngModel)]="configuracion.empresa.domicilio.telefono"
+														 #empresaDomicilioTelefono="ngModel" />
+													</div>
+													<div class="form-group col-md-4" [class.has-error]="empresaDomicilioPais.errors?.required && empresaDomicilioPais.dirty">
+														<label class="control-label">País</label>
+														<input type="text" class="form-control" required placeholder="País" name="empresaDomicilioPais" [(ngModel)]="configuracion.empresa.domicilio.localidad.pais"
+														 #empresaDomicilioPais="ngModel" />
+														<div class="help-block" *ngIf="empresaDomicilioPais.errors?.required">
+															Este campo es requerido
+														</div>
+													</div>
+													<div class="form-group col-md-4" [class.has-error]="empresaDomicilioEstado.errors?.required && empresaDomicilioEstado.dirty">
+														<label class="control-label">Estado</label>
+														<input type="text" class="form-control" required placeholder="Estado" name="empresaDomicilioEstado" [(ngModel)]="configuracion.empresa.domicilio.localidad.estado"
+														 #empresaDomicilioEstado="ngModel" />
+														<div class="help-block" *ngIf="empresaDomicilioEstado.errors?.required">
+															Este campo es requerido
+														</div>
+													</div>
+													<div class="form-group col-md-4" [class.has-error]="empresaDomicilioCiudad.errors?.required && empresaDomicilioCiudad.dirty">
+														<label class="control-label">Ciudad</label>
+														<input type="text" class="form-control" required placeholder="Ciudad" name="empresaDomicilioCiudad" [(ngModel)]="configuracion.empresa.domicilio.localidad.ciudad"
+														 #empresaDomicilioCiudad="ngModel" />
+														<div class="help-block" *ngIf="empresaDomicilioCiudad.errors?.required">
+															Este campo es requerido
+														</div>
+													</div>
+												</div>
+											</fieldset>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+
+						<div id="tabFacturacion" class="tab-pane">
+							<div class="panel-body">
+								<form #formularioFacturacion="ngForm">
+									<div class="row">
+										<div class="col-md-12">
+											<fieldset *ngIf="configuracion">
+												<legend>General</legend>
+												<div class="row">
+													<div class="form-group col-md-3" [class.has-error]="facturacionIva.errors?.required && facturacionIva.dirty">
+														<label class="control-label">IVA</label>
+														<div class="input-group m-b">
+															<input type="number" class="form-control text-right" required placeholder="IVA" name="facturacionIva" [(ngModel)]="configuracion.facturacionIva"
+															 #facturacionIva="ngModel" />
+															<span class="input-group-addon">%</span>
+														</div>
+														<div class="help-block" *ngIf="facturacionIva.errors?.required">
+															Requerido
+														</div>
+													</div>
+												</div>
+											</fieldset>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+
+						<div id="tabCorreo" class="tab-pane">
+							<div class="panel-body">
+								<form #formularioCorreo="ngForm">
+									<div class="row">
+										<div class="col-md-12">
+											<fieldset *ngIf="configuracion">
+												<legend>Configuración</legend>
+												<div class="row">
+													<div class="form-group col-md-6" [class.has-error]="correoAwsSes.errors?.required && correoAwsSes.dirty">
+														<label class="control-label">Correo</label>
+														<input type="text" class="form-control" required placeholder="Correo" name="correoAwsSes" [(ngModel)]="configuracion.correoAwsSes"
+															#correoAwsSes="ngModel" />
+														<div class="help-block" *ngIf="correoAwsSes.errors?.required">
+															Requerido
+														</div>
+													</div>
+												</div>
+
+												<legend>Cotizacion</legend>
+												<div class="row">
+													<div class="form-group col-md-12" [class.has-error]="correoCotizacionAsunto.errors?.required && correoCotizacionAsunto.dirty">
+														<label class="control-label">Asunto</label>
+														<small class="text-muted m-b block">
+															<strong>Etiquetas: </strong>
+															::folio::
+														</small>
+														<input type="text" class="form-control" required placeholder="Asunto" name="correoCotizacionAsunto" [(ngModel)]="configuracion.correoCotizacion.asunto"
+														 #correoCotizacionAsunto="ngModel" />
+														<div class="help-block" *ngIf="correoCotizacionAsunto.errors?.required">
+															Requerido
+														</div>
+													</div>
+													<div class="form-group col-md-12" [class.has-error]="correoCotizacionTitulo.errors?.required && correoCotizacionTitulo.dirty">
+														<label class="control-label">Título</label>
+														<small class="text-muted m-b block">
+															<strong>Etiquetas: </strong>
+															::folio::
+														</small>
+														<input type="text" class="form-control" required placeholder="Título" name="correoCotizacionTitulo" [(ngModel)]="configuracion.correoCotizacion.titulo"
+														 #correoCotizacionTitulo="ngModel" />
+														<div class="help-block" *ngIf="correoCotizacionTitulo.errors?.required">
+															Requerido
+														</div>
+													</div>
+													<div class="form-group col-md-12" [class.has-error]="correoCotizacionContenido.errors?.required && correoCotizacionContenido.dirty">
+														<label class="control-label">Contenido</label>
+														<small class="text-muted m-b block">
+															<strong>Etiquetas: </strong>
+															::folio::
+														</small>
+														<textarea class="form-control" rows="4" style="width:100%;" required name="correoCotizacionContenido" [(ngModel)]="configuracion.correoCotizacion.contenido"
+														 #correoCotizacionContenido="ngModel">
+                                                        </textarea>
+														<div class="help-block" *ngIf="correoCotizacionContenido.errors?.required">
+															Requerido
+														</div>
+													</div>
+												</div>
+
+												<legend>Venta</legend>
+												<div class="row">
+													<div class="form-group col-md-12" [class.has-error]="correoVentaAsunto.errors?.required && correoVentaAsunto.dirty">
+														<label class="control-label">Asunto</label>
+														<small class="text-muted m-b block">
+															<strong>Etiquetas: </strong>
+															::folio::
+														</small>
+														<input type="text" class="form-control" required placeholder="Asunto" name="correoVentaAsunto" [(ngModel)]="configuracion.correoVenta.asunto"
+														 #correoVentaAsunto="ngModel" />
+														<div class="help-block" *ngIf="correoVentaAsunto.errors?.required">
+															Requerido
+														</div>
+													</div>
+													<div class="form-group col-md-12" [class.has-error]="correoVentaTitulo.errors?.required && correoVentaTitulo.dirty">
+														<label class="control-label">Título</label>
+														<small class="text-muted m-b block">
+															<strong>Etiquetas: </strong>
+															::folio::
+														</small>
+														<input type="text" class="form-control" required placeholder="Título" name="correoVentaTitulo" [(ngModel)]="configuracion.correoVenta.titulo"
+														 #correoVentaTitulo="ngModel" />
+														<div class="help-block" *ngIf="correoVentaTitulo.errors?.required">
+															Requerido
+														</div>
+													</div>
+													<div class="form-group col-md-12" [class.has-error]="correoVentaContenido.errors?.required && correoVentaContenido.dirty">
+														<label class="control-label">Contenido</label>
+														<small class="text-muted m-b block">
+															<strong>Etiquetas: </strong>
+															::folio::
+														</small>
+														<textarea class="form-control" rows="4" style="width:100%;" required name="correoVentaContenido" [(ngModel)]="configuracion.correoVenta.contenido"
+														 #correoVentaContenido="ngModel">
+                                                        </textarea>
+														<div class="help-block" *ngIf="correoVentaContenido.errors?.required">
+															Requerido
+														</div>
+													</div>
+												</div>
+
+												<legend>Activación</legend>
+												<div class="row">
+													<div class="form-group col-md-12" [class.has-error]="correoActivacionAsunto.errors?.required && correoActivacionAsunto.dirty">
+														<label class="control-label">Asunto</label>
+														<small class="text-muted m-b block">
+															<strong>Etiquetas: </strong>
+															::icc:: | ::telefono::
+														</small>
+														<input type="text" class="form-control" required placeholder="Asunto" name="correoActivacionAsunto" [(ngModel)]="configuracion.correoActivacion.asunto"
+														 #correoActivacionAsunto="ngModel" />
+														<div class="help-block" *ngIf="correoActivacionAsunto.errors?.required">
+															Requerido
+														</div>
+													</div>
+													<div class="form-group col-md-12" [class.has-error]="correoActivacionTitulo.errors?.required && correoActivacionTitulo.dirty">
+														<label class="control-label">Título</label>
+														<small class="text-muted m-b block">
+															<strong>Etiquetas: </strong>
+															::icc:: | ::telefono::
+														</small>
+														<input type="text" class="form-control" required placeholder="Título" name="correoActivacionTitulo" [(ngModel)]="configuracion.correoActivacion.titulo"
+														 #correoActivacionTitulo="ngModel" />
+														<div class="help-block" *ngIf="correoActivacionTitulo.errors?.required">
+															Requerido
+														</div>
+													</div>
+													<div class="form-group col-md-12" [class.has-error]="correoActivacionContenido.errors?.required && correoActivacionContenido.dirty">
+														<label class="control-label">Contenido</label>
+														<small class="text-muted m-b block">
+															<strong>Etiquetas: </strong>
+															::icc:: | ::telefono:: | ::pinUno:: | ::pinDos:: | ::pukUno:: | ::pukDos:: | ::fechaActivacion:: | ::fechaCaducidad::
+														</small>
+														<textarea class="form-control" rows="4" style="width:100%;" required name="correoActivacionContenido" [(ngModel)]="configuracion.correoActivacion.contenido"
+														 #correoActivacionContenido="ngModel">
+                                                        </textarea>
+														<div class="help-block" *ngIf="correoActivacionContenido.errors?.required">
+															Requerido
+														</div>
+													</div>
+												</div>
+
+												<legend>Vencimiento de saldo</legend>
+												<div class="row">
+													<div class="form-group col-md-12" [class.has-error]="correoVencimientoSaldoAsunto.errors?.required && correoVencimientoSaldoAsunto.dirty">
+														<label class="control-label">Asunto</label>
+														<small class="text-muted m-b block">
+															<strong>Etiquetas: </strong>
+															::icc:: | ::telefono::
+														</small>
+														<input type="text" class="form-control" required placeholder="Asunto" name="correoVencimientoSaldoAsunto" [(ngModel)]="configuracion.correoVencimientoSaldo.asunto"
+														 #correoVencimientoSaldoAsunto="ngModel" />
+														<div class="help-block" *ngIf="correoVencimientoSaldoAsunto.errors?.required">
+															Requerido
+														</div>
+													</div>
+													<div class="form-group col-md-12" [class.has-error]="correoVencimientoSaldoTitulo.errors?.required && correoVencimientoSaldoTitulo.dirty">
+														<label class="control-label">Título</label>
+														<small class="text-muted m-b block">
+															<strong>Etiquetas: </strong>
+															::icc:: | ::telefono::
+														</small>
+														<input type="text" class="form-control" required placeholder="Título" name="correoVencimientoSaldoTitulo" [(ngModel)]="configuracion.correoVencimientoSaldo.titulo"
+														 #correoVencimientoSaldoTitulo="ngModel" />
+														<div class="help-block" *ngIf="correoVencimientoSaldoTitulo.errors?.required">
+															Requerido
+														</div>
+													</div>
+													<div class="form-group col-md-12" [class.has-error]="correoVencimientoSaldoContenido.errors?.required && correoVencimientoSaldoContenido.dirty">
+														<label class="control-label">Contenido</label>
+														<small class="text-muted m-b block">
+															<strong>Etiquetas: </strong>
+															::icc:: | ::telefono::
+														</small>
+														<textarea class="form-control" rows="4" style="width:100%;" required name="correoVencimientoSaldoContenido" [(ngModel)]="configuracion.correoVencimientoSaldo.contenido"
+														 #correoVencimientoSaldoContenido="ngModel">
+                                                        </textarea>
+														<div class="help-block" *ngIf="correoVencimientoSaldoContenido.errors?.required">
+															Requerido
+														</div>
+													</div>
+													<div class="form-group col-md-12" [class.has-error]="diasVencimientoAviso.errors?.required && diasVencimientoAviso.dirty">
+														<label class="control-label">Días para aviso de vencimiento de saldo</label>
+														<input type="number" class="form-control" required placeholder="Días para aviso de vencimiento de saldo" name="diasVencimientoAviso" [(ngModel)]="configuracion.diasVencimientoAviso"
+														 #diasVencimientoAviso="ngModel" />
+														<div class="help-block" *ngIf="diasVencimientoAviso.errors?.required">
+															Requerido
+														</div>
+													</div>
+													<div class="form-group col-md-12" [class.has-error]="diasVencimientoEnLista.errors?.required && diasVencimientoEnLista.dirty">
+														<label class="control-label">Días en la lista de SIM vencidas</label>
+														<input type="number" class="form-control" required placeholder="Días para aviso de vencimiento de saldo" name="diasVencimientoEnLista" [(ngModel)]="configuracion.diasVencimientoEnLista"
+														 #diasVencimientoEnLista="ngModel" />
+														<div class="help-block" *ngIf="diasVencimientoEnLista.errors?.required">
+															Requerido
+														</div>
+													</div>
+													<div class="form-group col-md-12" [class.has-error]="diasCaducidadAviso.errors?.required && diasCaducidadAviso.dirty">
+														<label class="control-label">Días para aviso de caducidad de SIM</label>
+														<input type="number" class="form-control" required placeholder="Días para aviso de vencimiento de saldo" name="diasCaducidadAviso" [(ngModel)]="configuracion.diasCaducidadAviso"
+														 #diasCaducidadAviso="ngModel" />
+														<div class="help-block" *ngIf="diasCaducidadAviso.errors?.required">
+															Requerido
+														</div>
+													</div>
+												</div>
+											</fieldset>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+
+						<div id="tabMonedas" class="tab-pane">
+							<div class="panel-body">
+								<form #formularioMonedas="ngForm">
+									<div class="row">
+										<div class="col-md-12">
+											<fieldset *ngIf="configuracion">
+												<legend>General</legend>
+												<div class="row">
+													<div class="form-group col-md-4" [class.has-error]="tipoCambio.errors?.required && tipoCambio.dirty">
+														<label class="control-label">Tipo de cambio</label>
+														<div class="input-group m-b">
+															<span class="input-group-addon">$</span>
+															<input type="number" class="form-control text-right" required placeholder="Tipo de cambio" name="tipoCambio" [(ngModel)]="configuracion.monedaConfiguracion.tipoCambio"
+															 #tipoCambio="ngModel" />
+														</div>
+														<div class="help-block" *ngIf="tipoCambio.errors?.required">
+															Requerido
+														</div>
+													</div>
+													<div class="form-group col-md-4" [class.has-error]="monedaPrincipalAbreviatura.errors?.required && monedaPrincipalAbreviatura.dirty">
+														<label class="control-label">Abreviatura moneda principal</label>
+														<input type="text" class="form-control" required placeholder="Tipo de cambio" name="monedaPrincipalAbreviatura" [(ngModel)]="configuracion.monedaConfiguracion.principalAbreviatura"
+														 #monedaPrincipalAbreviatura="ngModel" />
+														<div class="help-block" *ngIf="monedaPrincipalAbreviatura.errors?.required">
+															Requerido
+														</div>
+													</div>
+													<div class="form-group col-md-4" [class.has-error]="monedaNacionalAbreviatura.errors?.required && monedaNacionalAbreviatura.dirty">
+														<label class="control-label">Abreviatura moneda nacional</label>
+														<input type="text" class="form-control" required placeholder="Tipo de cambio" name="monedaNacionalAbreviatura" [(ngModel)]="configuracion.monedaConfiguracion.nacionalAbreviatura"
+														 #monedaNacionalAbreviatura="ngModel" />
+														<div class="help-block" *ngIf="monedaNacionalAbreviatura.errors?.required">
+															Requerido
+														</div>
+													</div>
+												</div>
+											</fieldset>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

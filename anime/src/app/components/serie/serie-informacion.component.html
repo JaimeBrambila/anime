@@ -1,0 +1,237 @@
+<div class="row">
+	<div class="col-lg-12 text-right">
+		<button class="btn btn-success " type="button" (click)="guardar()">
+			<i class="fa fa-floppy-o"></i>&nbsp;Guardar</button>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg-12">
+		<legend>Desarrollo</legend>
+		<div class="row">
+			<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">
+				<div class="widget style1" [class.navy-bg]="formaTitulo.status=='VALID'" [class.red-bg]="formaTitulo.status=='INVALID'" [class.yellow-bg]="formaTitulo.status=='INVALID'">
+					<div class="row">
+						<div class="col-xs-4">
+							<span>Título</span>
+							<h4 class="font-bold">{{formaTitulo.status}}</h4>
+						</div>
+						<div class="col-xs-8 text-right">
+							<button type="button" class="btn btn-xs" [class.btn-info]="formaTitulo.status=='VALID'" [class.btn-danger]="formaTitulo.status=='INVALID'"
+							 [class.btn-warning]="formaTitulo.status=='PENDING'" (click)="verFormaTitulo()">
+								<i class="fa fa-eye"></i>&nbsp;Ver Forma</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">
+				<div class="widget style1" [class.navy-bg]="formaSerie.status=='VALID'" [class.red-bg]="formaSerie.status=='INVALID'" [class.yellow-bg]="formaSerie.status=='INVALID'">
+					<div class="row">
+						<div class="col-xs-4">
+							<span>Serie</span>
+							<h4 class="font-bold">{{formaSerie.status}}</h4>
+						</div>
+						<div class="col-xs-8 text-right">
+							<button type="button" class="btn btn-xs" [class.btn-info]="formaSerie.status=='VALID'" [class.btn-danger]="formaSerie.status=='INVALID'"
+							 [class.btn-warning]="formaSerie.status=='PENDING'" (click)="verFormaSerie()">
+								<i class="fa fa-eye"></i>&nbsp;Ver Forma</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+		<legend>General</legend>
+
+		<form [formGroup]="formaTitulo">
+			<div class="row">
+				<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<table class="table table-responsive">
+						<tbody>
+							<tr>
+								<td style="width: 200px">
+									<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" [class.has-error]="formaTitulo.controls['serieAno'].errors?.required && formaTitulo.controls['serieAno'].dirty">
+										<label class="control-label">Año</label>
+										<span *ngIf="listaTitulos.length>0" style="display: block">
+											<h2>{{formaTitulo.get('serieAno').value}}</h2>
+										</span>
+										<input *ngIf="listaTitulos.length==0" id="ano" type="text" placeholder="Año" class="form-control" formControlName="serieAno"
+										 (keyup.enter)="agregarTitulo()" />
+										<div class="help-block" *ngIf="formaTitulo.controls['serieAno'].errors?.required">
+											Requerido
+										</div>
+										<div class="help-block" *ngIf="formaTitulo.controls['serieAno'].errors?.minlength || formaTitulo.controls['serieAno'].errors?.maxlength">
+											4 Dígitos
+										</div>
+										<div class="help-block" *ngIf="!formaTitulo.controls['serieAno'].errors?.minlength && !formaTitulo.controls['serieAno'].errors?.maxlength&&(formaTitulo.controls['serieAno'].errors?.min || formaTitulo.controls['serieAno'].errors?.max)">
+											Inválido
+										</div>
+									</div>
+								</td>
+								<td colspan="2">
+									<div class="form-group  col-xs-12 col-sm-12 col-md-12 col-lg-12" [class.has-error]="formaTitulo.controls['seriePaisId'].errors?.required && formaTitulo.controls['seriePaisId'].dirty">
+										<label class="control-label">País de Orígen de la Serie</label>
+										<span *ngIf="listaTitulos.length>0" style="display: block">
+											<h2>
+												<span style="height: 30px; width: 42px" [class]="'flag-icon flag-icon-' + pais.codigo"></span>&nbsp;{{pais.nombre}}</h2>
+										</span>
+										<select *ngIf="listaTitulos.length==0" formControlName="seriePaisId" class="form-control">
+											<option value="">-- Seleccionar --</option>
+											<option *ngFor="let pais of listaPaises" [ngValue]="pais.id">{{pais.nombre}}</option>
+										</select>
+										<div class="help-block" *ngIf="formaTitulo.controls['seriePaisId'].errors?.required">
+											Este campo es requerido
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<legend>Título</legend>
+					<table class="table table-responsive">
+						<tbody>
+							<tr>
+								<td style="width: 200px">
+									<div class="form-group  col-xs-12 col-sm-12 col-md-12 col-lg-12" [class.has-error]="formaTitulo.controls['paisId'].errors?.required && formaTitulo.controls['paisId'].dirty">
+										<label class="control-label">País</label>
+										<select formControlName="paisId" class="form-control">
+											<option value="">-- Seleccionar --</option>
+											<option *ngFor="let pais of listaPaises" [ngValue]="pais.id">{{pais.nombre}}</option>
+										</select>
+										<div class="help-block" *ngIf="formaTitulo.controls['paisId'].errors?.required">
+											Este campo es requerido
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" [class.has-error]="formaTitulo.controls['titulo'].errors?.required && formaTitulo.controls['titulo'].dirty">
+										<label class="control-label">Título</label>
+										<input type="text" placeholder="Título" class="form-control" formControlName="titulo" (keyup.enter)="agregarTitulo()" />
+										<div class="help-block" *ngIf="formaTitulo.controls['titulo'].errors?.required">
+											Este campo es requerido
+										</div>
+									</div>
+								</td>
+								<td style="width: 50px">
+									<button style="margin-top: 23px" class="btn btn-primary" type="button" (click)="agregarTitulo()" [disabled]="!formaTitulo.valid">
+										<i class="fa fa-plus"></i>
+										<span *ngIf="listaTitulos&&listaTitulos.length==0">&nbsp;Crear Serie</span>
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<table class="table table-responsive">
+						<tbody>
+							<tr *ngFor="let titulo of listaTitulos; index as indice" style="font-size: 20px;">
+								<td style="width: 58px">
+									<span style="height: 30px; width: 42px" [class]="'flag-icon flag-icon-' + titulo.pais.codigo"></span>
+								</td>
+								<td>{{titulo.titulo}}</td>
+								<td style="width: 50px">
+									<button *ngIf="listaTitulos&&listaTitulos.length>1" class="btn btn-danger" type="button" (click)="eliminarTitulo(indice)">
+										<i class="fa fa-trash"></i>
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</form>
+
+		<div *ngIf="listaTitulos&&listaTitulos.length>0">
+
+			<div class="row">
+				<div class="form-group col-xs-5 col-sm-5 col-md-5 col-lg-5">
+					<fieldset>
+						<legend>Calificación</legend>
+						<table class="table">
+							<tbody>
+								<td style="width:30px">
+									<button class="btn btn-circle" [class.btn-danger]="formaSerie.get('calificacion').value>0" type="button" (click)="eliminarCalificacion()"
+									 (mouseenter)="eliminarCalificacionOver()" (mouseleave)="eliminarCalificacionOut()">
+										<i class="fa fa-minus"></i>
+									</button>
+								</td>
+								<td style="width:185">
+									<star-rating-comp [rating]="calificacion" [starType]="'svg'" [size]="'large'" [hoverEnabled]="true" (onHoverRatingChange)="calificacionOver($event)"
+									 (onRatingChange)="calificacionChange($event)"></star-rating-comp>
+								</td>
+								<td>
+									<span [class]="calificacionClase" style="width: 150px">
+										<font size="4">{{calificacionTemporal>0?(calificacionTemporal | calificacion):(formaSerie.get('calificacion').value | calificacion)}}</font>
+									</span>
+								</td>
+							</tbody>
+						</table>
+					</fieldset>
+				</div>
+				<div class="form-group col-xs-12 col-sm-12 col-md-7 col-lg-7">
+					<legend>Creador</legend>
+					<rl-tag-input [(ngModel)]="listaCreadoresSeleccionadosNombre" [autocomplete]="true" [autocompleteItems]="listaCreadoresExistentesNombre" [autocompleteMustMatch]="false"
+					 [autocompleteSelectFirstItem]="false" placeholder="Ingresa creador" (addTag)="agregarCreador($event)" (removeTag)="eliminarCreador($event)"></rl-tag-input>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<legend>Género</legend>
+					<rl-tag-input [(ngModel)]="listaGenerosSeleccionadosNombre" [autocomplete]="true" [autocompleteItems]="listaGenerosExistentesNombre" [autocompleteMustMatch]="true"
+					 [autocompleteSelectFirstItem]="false" placeholder="Ingresa género" (addTag)="agregarGenero($event)" (removeTag)="eliminarGenero($event)"></rl-tag-input>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<legend>Tema</legend>
+					<rl-tag-input [(ngModel)]="listaTemasSeleccionadosNombre" [autocomplete]="true" [autocompleteItems]="listaTemasExistentesNombre" [autocompleteMustMatch]="false"
+					 [autocompleteSelectFirstItem]="false" placeholder="Ingresa tema" (addTag)="agregarTema($event)" (removeTag)="eliminarTema($event)"></rl-tag-input>
+				</div>
+			</div>
+
+			<form [formGroup]="formaSerie">
+				<div class="row">
+					<div class="form-group  col-xs-4 col-sm-4 col-md-4 col-lg-4" [class.has-error]="formaSerie.controls['cronologiaId'].errors?.required && formaSerie.controls['cronologiaSerieId'].dirty">
+						<legend>Cronología</legend>
+						<select id="selectCronologia" formControlName="cronologiaId" class="form-control">
+							<option></option>
+							<option *ngFor="let cronologia of listaCronologias" [ngValue]="cronologia.id">{{cronologia.nombre}}</option>
+						</select>
+					</div>
+					<div class="form-group  col-xs-8 col-sm-8 col-md-8 col-lg-8" [class.has-error]="formaSerie.controls['cronologiaSerieId'].errors?.required && formaSerie.controls['cronologiaSerieId'].dirty">
+						<legend>Cronología Serie</legend>
+						<select id="selectCronologiaSerie" formControlName="cronologiaSerieId" class="form-control">
+							<option></option>
+							<option *ngFor="let cronologiaSerie of listaSeries" [ngValue]="cronologiaSerie.id">{{cronologiaSerie.serieTitulos[0].titulo}}</option>
+						</select>
+						<div class="help-block" *ngIf="formaSerie.controls['cronologiaSerieId'].errors?.required">
+							Este campo es requerido
+						</div>
+					</div>
+				</div>
+			</form>
+			<div class="row">
+				<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<fieldset>
+						<legend>Sinopsis</legend>
+						<div id="sinopsis"></div>
+					</fieldset>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+</div>
+
+<div class="row">
+	<div class="col-lg-12 text-right">
+		<button class="btn btn-success " type="button" (click)="guardar()">
+			<i class="fa fa-floppy-o"></i>&nbsp;Guardar</button>
+	</div>
+</div>
