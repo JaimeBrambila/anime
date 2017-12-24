@@ -41,7 +41,7 @@ export class BaseComponent {
      */
     public cargarConfiguracion(): Promise<boolean> {
         return new Promise<any>((resolve, reject) => {
-            this.rest.obtenerTodosLosItems(environment.TABLAS.CONFIGURACION).then((resultado) => {
+            this.rest.obtenerTodosLosItems(environment.REST.TABLAS.CONFIGURACION).then((resultado) => {
                 if(resultado.length>0){
                     this.configuracionService = new Configuracion(resultado[0]);
                     resolve(true);
@@ -58,7 +58,7 @@ export class BaseComponent {
      */
     public cargarConfiguracionSistema(): Promise<boolean> {
         return new Promise<any>((resolve, reject) => {
-            this.rest.obtenerTodosLosItems(environment.TABLAS.CONFIGURACION_SISTEMA).then((resultado) => {
+            this.rest.obtenerTodosLosItems(environment.REST.TABLAS.CONFIGURACION_SISTEMA).then((resultado) => {
                 if(resultado.length>0){
                     this.configuracionSistemaService = new ConfiguracionSistema(resultado[0]);
                     resolve(true);

@@ -4,8 +4,10 @@ const restify = require('restify');
 const restifyBodyParser = require('restify-plugins').bodyParser;
 const sequelize = require('./conexion');
 const baseDatos = require('./base-datos');
-const rest = require('./rest');
+const rest = require('./rest/rest');
 const serie = require('./rest/serie');
+const saga = require('./rest/saga');
+const episodio = require('./rest/episodio');
 const server = restify.createServer();
 
 baseDatos.inicializarBaseDatos().then(() => {
@@ -19,13 +21,21 @@ server.opts('/\.*/', corsHandler, optionsRoute);
 /**
 * Servicios
 */
-server.get('/api/:tabla/', rest.obtenerItems);
-server.get('/api/:tabla/:id', rest.obtenerItem);
+server.get('/api/serie/obtener-series/', serie.obtenerSeries);
+server.get('/api/serie/obtener-serie-por-id/:id/', serie.obtenerSeriePorId);
+server.get('/api/saga/obtener-sagas/:serieId/:tipo/', saga.obtenerSagas);
+server.get('/api/episodio/obtener-episodio-por-id/:id/', episodio.obtenerEpisodioPorId);
+server.get('/api/obtener-items-todos/:tabla/', rest.obtenerTodosLosItems);
+server.get('/api/obtener-items-todos-simple/:tabla/', rest.obtenerTodosLosItemsSimple);
+server.get('/api/obtener-item-por-id/:tabla/:id/', rest.obtenerItemPorId);
+server.get('/api/obtener-item-por-id-simple/:tabla/:id/', rest.obtenerItemPorIdSimple);
+server.get('/api/obtener-items-por-campo/:tabla/:campo/:criterio/', rest.obtenerItemsPorCampo);
+server.get('/api/obtener-items-and/:tabla/:campo1/:criterio1/:campo2/:criterio2/', rest.obtenerItemsAnd);
 server.put('/api/insertar-item/:tabla/', rest.insertarItem);
 server.put('/api/insertar-items/:tabla/', rest.insertarItems);
 server.put('/api/actualizar-item/:tabla/', rest.actualizarItem);
-server.put('/api/eliminar-item/:tabla/:campo/:criterio/', rest.eliminarItem);
-server.put('/api/eliminar-and/:tabla/:campo1/:criterio1/:campo2/:criterio2/', rest.eliminarAnd);
+server.put('/api/eliminar-items/:tabla/:campo/:criterio/', rest.eliminarItems);
+server.put('/api/eliminar-items-and/:tabla/:campo1/:criterio1/:campo2/:criterio2/', rest.eliminarItemsAnd);
 
 /**
  * Inicializar servidor

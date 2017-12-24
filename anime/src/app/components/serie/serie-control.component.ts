@@ -14,7 +14,7 @@ export class SerieControlComponent extends BaseComponent implements OnInit {
     public nombreArchivo;
 
     constructor(
-        private injector: Injector
+        private injector: Injector,
     ) {
         super(injector);
     }
@@ -36,23 +36,22 @@ export class SerieControlComponent extends BaseComponent implements OnInit {
         let nombreMetodo = 'inicializarTabla';
         console.log(`[${nombreMetodo}] Cargando tabla...`);
         this.loader.abrir();
-        this.rest.obtenerTodosLosItems(this.environment.TABLAS.SERIE).then((resultado) => {
+        this.rest.obtenerSeries().then((resultado) => {
             this.tabla = (<any>$('#tabla')).dataTable({
                 data: resultado,
                 columnDefs: [
-                    { width: "50px", sClass: 'text-center', targets: [1, 2] }
+                    { width: "50px", sClass: 'text-center', targets: [0] }
                 ],
                 order: [[0, "asc"]],
                 columns: [
-                    { data: 'serieTitulos', title: 'Título', render: (serieTitulos)=>{
+                    { data: 'ano', title: 'Año' },
+                    { data: 'titulos', title: 'Título', render: (titulos)=>{
                         let tituloCompleto = '';
-                        serieTitulos.forEach((titulo) => {
-                            tituloCompleto += titulo.titulo + '<br>';
+                        titulos.forEach((titulo) => {
+                            tituloCompleto += '<span class="flag-icon flag-icon-' + titulo.pais.codigo + '"></span>&nbsp;' + titulo.titulo + '<br>';
                         });
                         return tituloCompleto;
                     } },
-                    { data: 'borrado', title: 'Borrado' },
-                    { data: 'activo', title: 'Activo' },
                 ],
                 select: {
                     style: 'single'

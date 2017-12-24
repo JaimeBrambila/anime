@@ -173,24 +173,27 @@
 				</div>
 				<div class="form-group col-xs-12 col-sm-12 col-md-7 col-lg-7">
 					<legend>Creador</legend>
-					<rl-tag-input [(ngModel)]="listaCreadoresSeleccionadosNombre" [autocomplete]="true" [autocompleteItems]="listaCreadoresExistentesNombre" [autocompleteMustMatch]="false"
-					 [autocompleteSelectFirstItem]="false" placeholder="Ingresa creador" (addTag)="agregarCreador($event)" (removeTag)="eliminarCreador($event)"></rl-tag-input>
+					<rl-tag-input [(ngModel)]="listaCreadoresSeleccionadosNombre" [autocomplete]="true" [autocompleteItems]="listaCreadoresExistentesNombre"
+					 [autocompleteMustMatch]="false" [autocompleteSelectFirstItem]="true" placeholder="Ingresa creador" (addTag)="agregarCreador($event)"
+					 (removeTag)="eliminarCreador($event)"></rl-tag-input>
 				</div>
 			</div>
 
 			<div class="row">
 				<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
 					<legend>Género</legend>
-					<rl-tag-input [(ngModel)]="listaGenerosSeleccionadosNombre" [autocomplete]="true" [autocompleteItems]="listaGenerosExistentesNombre" [autocompleteMustMatch]="true"
-					 [autocompleteSelectFirstItem]="false" placeholder="Ingresa género" (addTag)="agregarGenero($event)" (removeTag)="eliminarGenero($event)"></rl-tag-input>
+					<rl-tag-input [(ngModel)]="listaGenerosSeleccionadosNombre" [autocomplete]="true" [autocompleteItems]="listaGenerosExistentesNombre"
+					 [autocompleteMustMatch]="true" [autocompleteSelectFirstItem]="true" placeholder="Ingresa género" (addTag)="agregarGenero($event)"
+					 (removeTag)="eliminarGenero($event)"></rl-tag-input>
 				</div>
 			</div>
 
 			<div class="row">
 				<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
 					<legend>Tema</legend>
-					<rl-tag-input [(ngModel)]="listaTemasSeleccionadosNombre" [autocomplete]="true" [autocompleteItems]="listaTemasExistentesNombre" [autocompleteMustMatch]="false"
-					 [autocompleteSelectFirstItem]="false" placeholder="Ingresa tema" (addTag)="agregarTema($event)" (removeTag)="eliminarTema($event)"></rl-tag-input>
+					<rl-tag-input [(ngModel)]="listaTemasSeleccionadosNombre" [autocomplete]="true" [autocompleteItems]="listaTemasExistentesNombre"
+					 [autocompleteMustMatch]="false" [autocompleteSelectFirstItem]="true" placeholder="Ingresa tema" (addTag)="agregarTema($event)"
+					 (removeTag)="eliminarTema($event)"></rl-tag-input>
 				</div>
 			</div>
 
@@ -198,17 +201,11 @@
 				<div class="row">
 					<div class="form-group  col-xs-4 col-sm-4 col-md-4 col-lg-4" [class.has-error]="formaSerie.controls['cronologiaId'].errors?.required && formaSerie.controls['cronologiaSerieId'].dirty">
 						<legend>Cronología</legend>
-						<select id="selectCronologia" formControlName="cronologiaId" class="form-control">
-							<option></option>
-							<option *ngFor="let cronologia of listaCronologias" [ngValue]="cronologia.id">{{cronologia.nombre}}</option>
-						</select>
+						<ng-select [multiple]="false" [options]="listaCronologias" formControlName="cronologiaId" placeholder="Elegir cronología" [allowClear]="true"></ng-select>
 					</div>
 					<div class="form-group  col-xs-8 col-sm-8 col-md-8 col-lg-8" [class.has-error]="formaSerie.controls['cronologiaSerieId'].errors?.required && formaSerie.controls['cronologiaSerieId'].dirty">
 						<legend>Cronología Serie</legend>
-						<select id="selectCronologiaSerie" formControlName="cronologiaSerieId" class="form-control">
-							<option></option>
-							<option *ngFor="let cronologiaSerie of listaSeries" [ngValue]="cronologiaSerie.id">{{cronologiaSerie.serieTitulos[0].titulo}}</option>
-						</select>
+						<ng-select [multiple]="false" [options]="listaSeries" formControlName="cronologiaSerieId" placeholder="Elegir serie relacionada" [allowClear]="true"></ng-select>
 						<div class="help-block" *ngIf="formaSerie.controls['cronologiaSerieId'].errors?.required">
 							Este campo es requerido
 						</div>

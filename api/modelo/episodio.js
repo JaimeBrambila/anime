@@ -17,6 +17,10 @@ module.exports = sequelize.define(CONFIGURACION.MODELO.EPISODIO,
             type: Sequelize.BOOLEAN,
             allowNull: false
         },
+        visto: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false
+        },
         ano: {
             type: Sequelize.INTEGER,
         },
@@ -24,12 +28,12 @@ module.exports = sequelize.define(CONFIGURACION.MODELO.EPISODIO,
             type: Sequelize.STRING(CONFIGURACION.PROTOTIPOS.CADENA_CH),
         },
         numeroOrden: {
-            type: Sequelize.DECIMAL,
+            type: Sequelize.DECIMAL(10,3),
             allowNull: false,
             unique: true
         },
         numero: {
-            type: Sequelize.DECIMAL,
+            type: Sequelize.DECIMAL(10,3),
             allowNull: false,
             unique: true
         },

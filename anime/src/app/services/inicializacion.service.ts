@@ -52,8 +52,8 @@ export class InicializacionService {
 		items.push({ id: UUID(), borrado: 0, activo: 1, codigo: 'fr', nombre: 'Francia', idioma: 'Francés' });
 		items.push({ id: UUID(), borrado: 0, activo: 1, codigo: 'jp', nombre: 'Japón', idioma: 'Japonés' });
 		items.push({ id: UUID(), borrado: 0, activo: 1, codigo: 'kr', nombre: 'Korea del Sur', idioma: 'Coreano' });
-		items.push({ id: UUID(), borrado: 0, activo: 1, codigo: 'mx', nombre: 'México', idioma: 'Latino' });
-		return this.rest.insertarItems(environment.TABLAS.PAIS, items).then(() => {
+		items.push({ id: UUID(), borrado: 0, activo: 1, codigo: 'mx', nombre: 'México', idioma: 'Español' });
+		return this.rest.insertarItems(environment.REST.TABLAS.PAIS, items).then(() => {
 			console.log(`[${nombreMetodo}] Paises insertados correctamente.`);
 		}).catch((error) => {
 			console.error(`[${nombreMetodo}] Error al insertar los items en la tabla: `, error);
@@ -67,13 +67,7 @@ export class InicializacionService {
 		let nombreMetodo = 'inicializarCreadores';
 		console.log(`[${nombreMetodo}] Insertando creadores iniciales...`);
 		let items = [];
-		items.push({ id: UUID(), borrado: 0, activo: 1, nombre: 'Satoru Akahori' });
-		items.push({ id: UUID(), borrado: 0, activo: 1, nombre: 'Takashi Okazaki' });
-		items.push({ id: UUID(), borrado: 0, activo: 1, nombre: 'Yoko Maki' });
-		items.push({ id: UUID(), borrado: 0, activo: 1, nombre: 'Yuzo Takada' });
-		items.push({ id: UUID(), borrado: 0, activo: 1, nombre: 'Keiichi Sigsawa' });
-		items.push({ id: UUID(), borrado: 0, activo: 1, nombre: 'HOOK' });
-		return this.rest.insertarItems(environment.TABLAS.CREADOR, items).then(() => {
+		return this.rest.insertarItems(environment.REST.TABLAS.CREADOR, items).then(() => {
 			console.log(`[${nombreMetodo}] Creadores insertados correctamente.`);
 		}).catch((error) => {
 			console.error(`[${nombreMetodo}] Error al insertar los items en la tabla: `, error);
@@ -99,7 +93,7 @@ export class InicializacionService {
 		items.push({ id: UUID(), borrado: 0, activo: 1, nombre: 'Sequel' });
 		items.push({ id: UUID(), borrado: 0, activo: 1, nombre: 'Side Story' });
 		items.push({ id: UUID(), borrado: 0, activo: 1, nombre: 'Spinoff' });
-		return this.rest.insertarItems(environment.TABLAS.CRONOLOGIA, items).then(() => {
+		return this.rest.insertarItems(environment.REST.TABLAS.CRONOLOGIA, items).then(() => {
 			console.log(`[${nombreMetodo}] Cronologias insertados correctamente.`);
 		}).catch((error) => {
 			console.error(`[${nombreMetodo}] Error al insertar los items en la tabla: `, error);
@@ -240,7 +234,7 @@ export class InicializacionService {
 		items.push({ id: UUID(), borrado: 0, activo: 1, nombre: 'Youkai-Anime', siglas: 'Youkai' });
 		items.push({ id: UUID(), borrado: 0, activo: 1, nombre: 'Yume Anime Team', siglas: 'YaT' });
 		items.push({ id: UUID(), borrado: 0, activo: 1, nombre: 'Zona UnderWorld', siglas: 'Z-U' });
-		return this.rest.insertarItems(environment.TABLAS.FANSUB, items).then(() => {
+		return this.rest.insertarItems(environment.REST.TABLAS.FANSUB, items).then(() => {
 			console.log(`[${nombreMetodo}] Fansubs insertados correctamente.`);
 		}).catch((error) => {
 			console.error(`[${nombreMetodo}] Error al insertar los items en la tabla: `, error);
@@ -270,7 +264,7 @@ export class InicializacionService {
 		items.push({ id: UUID(), borrado: 0, activo: 1, nombre: 'Supernatural', descripcion: 'Sobrenatural' });
 		items.push({ id: UUID(), borrado: 0, activo: 1, nombre: 'Thriller', descripcion: 'Novela de Suspenso' });
 		items.push({ id: UUID(), borrado: 0, activo: 1, nombre: 'Tournament', descripcion: 'Torneo' });
-		return this.rest.insertarItems(environment.TABLAS.GENERO, items).then(() => {
+		return this.rest.insertarItems(environment.REST.TABLAS.GENERO, items).then(() => {
 			console.log(`[${nombreMetodo}] Generos insertados correctamente.`);
 		}).catch((error) => {
 			console.error(`[${nombreMetodo}] Error al insertar los items en la tabla: `, error);
@@ -617,7 +611,7 @@ export class InicializacionService {
 		items.push({ id: UUID(), borrado: 0, activo: 1, nombre: 'Yuri', descripcion: 'Lesbianas' });
 		items.push({ id: UUID(), borrado: 0, activo: 1, nombre: 'Yōkai', descripcion: 'Apariciones, espíritus, demonios o monstruos.' });
 		items.push({ id: UUID(), borrado: 0, activo: 1, nombre: 'Zombies', descripcion: 'Zombis' });
-		return this.rest.insertarItems(environment.TABLAS.TEMA, items).then(() => {
+		return this.rest.insertarItems(environment.REST.TABLAS.TEMA, items).then(() => {
 			console.log(`[${nombreMetodo}] Temas insertados correctamente.`);
 		}).catch((error) => {
 			console.error(`[${nombreMetodo}] Error al insertar los items en la tabla: `, error);

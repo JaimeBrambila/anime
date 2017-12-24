@@ -11,6 +11,7 @@ import { RlTagInputModule } from 'angular2-tag-input';
 import { NgDatepickerModule } from 'ng2-datepicker';
 import { DateTimePickerModule } from 'ng-pick-datetime';
 import { StarRatingModule } from 'angular-star-rating';
+import { SelectModule } from 'angular2-select';
 import 'moment/locale/es';
 
 // Servicios
@@ -39,7 +40,11 @@ import { PanelControlComponent } from './components/panel-control/panel-control.
 import { PiePaginaComponent } from './components/comunes/pie-pagina/pie-pagina.component';
 import { SerieControlComponent } from './components/serie/serie-control.component';
 import { SerieEdicionComponent } from './components/serie/serie-edicion.component';
-import { SerieInformacionComponent } from './components/serie/serie-informacion.component';
+import { SerieEdicionInformacionComponent } from './components/serie/serie-edicion-informacion.component';
+import { SerieEdicionEpisodiosComponent } from './components/serie/serie-edicion-episodios.component';
+import { SerieEdicionPortadaComponent } from './components/serie/serie-edicion-portada.component';
+import { EpisodioEdicionComponent } from './components/episodio/episodio-edicion.component';
+import { EpisodioEdicionInformacionComponent } from './components/episodio/episodio-edicion-informacion.component';
 
 @NgModule({
 	declarations: [
@@ -50,13 +55,17 @@ import { SerieInformacionComponent } from './components/serie/serie-informacion.
 		ConfiguracionAdministradorSistemaComponent,
 		ConfiguracionAdministradorComponent,
 		ContenedorComponent,
+		EpisodioEdicionComponent,
+		EpisodioEdicionInformacionComponent,
 		IngresoComponent,
 		MenuComponent,
 		PanelControlComponent,
 		PiePaginaComponent,
 		SerieControlComponent,
 		SerieEdicionComponent,
-		SerieInformacionComponent
+		SerieEdicionInformacionComponent,
+		SerieEdicionEpisodiosComponent,
+		SerieEdicionPortadaComponent,
 	],
 	imports: [
 		BrowserModule,
@@ -68,16 +77,17 @@ import { SerieInformacionComponent } from './components/serie/serie-informacion.
 		RlTagInputModule,
 		NgDatepickerModule,
 		DateTimePickerModule,
+		SelectModule,
 		StarRatingModule.forRoot()
 	],
 	providers: [
-		{ 
-			provide: ErrorHandler, 
-			useClass: TORAErrorHandler 
+		{
+			provide: ErrorHandler,
+			useClass: TORAErrorHandler
 		},
-		{ 
-			provide: LOCALE_ID, 
-			useValue: "es-MX" 
+		{
+			provide: LOCALE_ID,
+			useValue: "es-MX"
 		},
 		InicializacionService,
 		Loader,

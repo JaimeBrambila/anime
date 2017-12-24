@@ -1,7 +1,7 @@
 import * as UUID from 'uuid/v4';
 import { Pais } from '../model/pais';
 
-export class SerieTitulo {
+export class Titulo {
 
 	public id: string;
 	public serieId: string;
@@ -21,10 +21,10 @@ export class SerieTitulo {
 	/**
 	* Recibe un arreglo de objetos y lo convierte a un arreglo de la clase.
 	*/
-	public static arreglo(arregloRAW: any): SerieTitulo[] {
-		let arregloClase: SerieTitulo[] = [];
+	public static arreglo(arregloRAW: any): Titulo[] {
+		let arregloClase: Titulo[] = [];
 		for (let objetoRAW of arregloRAW) {
-			arregloClase.push(new SerieTitulo(objetoRAW));
+			arregloClase.push(new Titulo(objetoRAW));
 		}
 		return arregloClase;
 	}

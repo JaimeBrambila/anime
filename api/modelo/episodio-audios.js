@@ -2,19 +2,19 @@ const Sequelize = require('sequelize');
 const sequelize = require('../conexion');
 const CONFIGURACION = require('../configuracion');
 
-module.exports = sequelize.define(CONFIGURACION.MODELO.SERIE_SAGAS,
+module.exports = sequelize.define(CONFIGURACION.MODELO.EPISODIO_AUDIOS,
     {
-        serieId: {
+        episodioId: {
             type: Sequelize.STRING(CONFIGURACION.PROTOTIPOS.UUID),
             allowNull: false
         },
-        sagaId: {
+        paisId: {
             type: Sequelize.STRING(CONFIGURACION.PROTOTIPOS.UUID),
             allowNull: false
         }
     },
     {
-        tableName: CONFIGURACION.TABLAS.SERIE_SAGAS,
+        tableName: CONFIGURACION.TABLAS.EPISODIO_AUDIOS,
         timestamps: false,
         freezeTableName: true,
     }

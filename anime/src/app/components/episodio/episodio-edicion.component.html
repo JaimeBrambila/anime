@@ -1,0 +1,45 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+	<div class="row">
+		<div class="col-lg-12">
+				<p class="text-right" style="margin-top: 10px; margin-bottom: -50px;">
+					<button class="btn btn-danger " type="button" routerLink="/app/series/editar/{{serieId}}">
+						<i class="fa fa-step-backward"></i>&nbsp;Salir</button>
+				</p>
+			<h2>Episodio</h2>
+			<ol class="breadcrumb">
+				<li>
+					Información del episodio
+				</li>
+			</ol>
+		</div>
+	</div>
+</div>
+
+<div class="wrapper wrapper-content">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="tabs-container">
+				<ul class="nav nav-tabs">
+					<li class="active">
+						<a data-toggle="tab" href="#tabInformacion" aria-expanded="true"> Información</a>
+					</li>
+					<li *ngIf="registroId" class="">
+						<a data-toggle="tab" href="#tabCapturas" aria-expanded="false">Capturas</a>
+					</li>
+				</ul>
+				<div class="tab-content">
+					<div id="tabInformacion" class="tab-pane active">
+						<div class="panel-body">
+							<app-episodio-edicion-informacion [registroId]="registroId"></app-episodio-edicion-informacion>
+						</div>
+					</div>
+					<div id="tabCapturas" class="tab-pane" *ngIf="registroId">
+						<div class="panel-body">
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

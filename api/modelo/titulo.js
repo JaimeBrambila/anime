@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const sequelize = require('../conexion');
 const CONFIGURACION = require('../configuracion');
 
-module.exports = sequelize.define(CONFIGURACION.MODELO.SERIE_TITULOS,
+module.exports = sequelize.define(CONFIGURACION.MODELO.TITULO,
     {
         id: {
             type: Sequelize.STRING(CONFIGURACION.PROTOTIPOS.UUID),
@@ -15,7 +15,7 @@ module.exports = sequelize.define(CONFIGURACION.MODELO.SERIE_TITULOS,
         }
     },
     {
-        tableName: CONFIGURACION.TABLAS.SERIE_TITULOS,
+        tableName: CONFIGURACION.TABLAS.TITULO,
         timestamps: false,
         freezeTableName: true,
     }

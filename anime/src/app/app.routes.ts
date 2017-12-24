@@ -5,6 +5,7 @@ import { AccesoGuard } from './clases/acceso.guard';
 import { ConfiguracionAdministradorSistemaComponent } from './components/configuracion/configuracion-administrador-sistema.component';
 import { ConfiguracionAdministradorComponent } from './components/configuracion/configuracion-administrador.component';
 import { ContenedorComponent } from './components/comunes/contenedor/contenedor.component';
+import { EpisodioEdicionComponent } from './components/episodio/episodio-edicion.component';
 import { IngresoComponent } from './components/comunes/ingreso/ingreso.component';
 import { PanelControlComponent } from './components/panel-control/panel-control.component';
 import { SerieControlComponent } from './components/serie/serie-control.component';
@@ -20,24 +21,10 @@ const routes: Routes = [
 			{ path: 'panel-control', component: PanelControlComponent },
 			{ path: 'configuracion/sistema', component: ConfiguracionAdministradorComponent },
 			{ path: 'configuracion/avanzada', component: ConfiguracionAdministradorSistemaComponent },
-			// { path: 'usuarios/historico', component: UsuarioControlComponent },
-			// { path: 'usuarios/nuevo', component: UsuarioEdicionComponent },
-			// { path: 'usuarios/editar/:username', component: UsuarioEdicionComponent },
-			// { path: 'ventas/historico', component: VentaControlComponent },
-			// { path: 'ventas/nueva', component: VentaEdicionComponent },
-			// { path: 'ventas/convertir/:id', component: VentaEdicionComponent },
-			// { path: 'ventas/editar/:id', component: VentaEdicionComponent },
-			// { path: 'ventas/ver/:id', component: VentaVistaComponent },
-			// { path: 'ventas/recargar/:idCliente/:idTarjeta', component: VentaEdicionComponent },
-			// { path: 'cotizaciones/historico', component: VentaControlComponent },
-			// { path: 'cotizaciones/nueva', component: VentaEdicionComponent },
-			// { path: 'cotizaciones/ver/:id', component: VentaVistaComponent },
-			// { path: 'tarjeta-sim/historico', component: TarjetaSimControlComponent },
-			// { path: 'tarjeta-sim/activar/:id', component: TarjetaSimActivacionComponent },
-			// { path: 'tarjeta-sim/ver/:id', component: TarjetaSimVistaComponent },
 			{ path: 'series/historico', component: SerieControlComponent },
 			{ path: 'series/nueva', component: SerieEdicionComponent },
 			{ path: 'series/editar/:id', component: SerieEdicionComponent },
+			{ path: 'series/editar-episodio/:id/:serieId', component: EpisodioEdicionComponent },
 		]
 	},
 	{ path: '', redirectTo: 'app/panel-control', pathMatch: 'full' }

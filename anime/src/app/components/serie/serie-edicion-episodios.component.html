@@ -1,0 +1,333 @@
+<div class="row">
+	<div class="col-lg-12">
+		<legend>Desarrollo</legend>
+		<div class="row">
+
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+
+		<legend>
+			Sagas
+			<span class="pull-right">
+				<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalSaga">
+					<i class="fa fa-plus"></i>&nbsp;Saga
+				</button>
+			</span>
+		</legend>
+
+		<div class="row">
+			<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<div class="panel-group" id="accordionSagas">
+					<div *ngFor="let saga of listaSagas" class="panel panel-default">
+						<div class="panel-heading">
+							<h5 class="panel-title">
+								<a (click)="seleccionarSaga(saga)" data-toggle="collapse" data-parent="#accordionSagas" href="#{{saga.id}}" aria-expanded="false"
+								 class="collapsed">{{saga.numero + ' ' + saga.titulo}}</a>
+								<span class="pull-right">
+									<button type="button" class="btn btn-primary btn-xs" (click)="agregarEpisodio(saga);" data-toggle="modal" data-target="#modalEpisodio"
+									 style="margin-top: -4px">
+										<i class="fa fa-plus"></i>&nbsp;Episodio
+									</button>
+									<button type="button" class="btn btn-danger btn-xs" (click)="eliminarSaga(saga.id,saga.titulo)" [disabled]="saga.episodios.length>0"
+									 style="margin-top: -4px">
+										<i class="fa fa-trash"></i>
+									</button>
+								</span>
+								<span class="pull-right" style="margin-right: 30px">
+									<div data-toggle="tooltip" title="Episodios Vistos" class="badge badge-primary" style="display:inline-block; width:70px; background-color:#2761a7; margin-top: -2px; font-size: 12px;">
+										<i class="fa fa-eye"></i>&nbsp; {{saga.episodiosVistos + '/' + saga.episodiosTotales}}
+									</div>
+								</span>
+							</h5>
+						</div>
+						<div [id]="saga.id" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+							<div class="panel-body">
+								<div class="row" *ngFor="let episodio of saga.episodiosOrdenados" style="margin-bottom: 5px">
+									<div class="col-lg-12">
+										<div [id]="episodio.id" [class]="episodio.vistoClase">
+											<div class="panel-heading">
+												<div class="badge" style="font-size: 14px; font-weight: bold; width: 70px; background-color: #ffffff; color: #5e5e5e;">
+													&nbsp;{{episodio.numeroTexto}}
+												</div>
+												<span style="font-size: 14px; font-weight: bold;">{{episodio.titulo}}</span>
+												<span class="pull-right">
+													<button type="button" class="btn btn-success btn-xs" (click)="editarEpisodio(episodio)" style="margin-top: -4px">
+														<i class="fa fa-edit"></i>
+													</button>
+													<button type="button" class="btn btn-danger btn-xs" (click)="eliminarEpisodio(episodio)" style="margin-top: -4px">
+														<i class="fa fa-trash"></i>
+													</button>
+												</span>
+												<span class="pull-right" *ngIf="episodio.subtitulos.length">
+													<i class="fa fa-commenting-o" title="Subtítulo"></i>
+													<span *ngFor="let subtitulo of episodio.subtitulos" class="flag-icon flag-icon-{{subtitulo.codigo}}" [title]="subtitulo.idioma"></span>
+													&nbsp;&nbsp;&nbsp;
+												</span>
+												<span class="pull-right" *ngIf="episodio.audios.length">
+													<i class="fa fa-volume-up" title="Audio"></i>
+													<span *ngFor="let audio of episodio.audios" class="flag-icon flag-icon-{{audio.codigo}}" [title]="audio.idioma"></span>
+													&nbsp;
+												</span>
+												<span class="pull-right" *ngIf="episodio.fansubs.length">
+													<i class="fa fa-language" title="Fansub"></i>
+													<span *ngFor="let fansub of episodio.fansubs" style="font-size: 11px;" [title]="fansub.nombre">{{fansub.siglas}}</span>
+													&nbsp;
+												</span>
+
+												<span class="pull-right" *ngIf="episodio.extension">
+													<i class="fa fa-file-video-o" title="Contenedor"></i>
+													<span style="font-size: 11px;" [title]="episodio.extension">{{episodio.extension}}</span>
+													&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												</span>
+												<span class="pull-right" *ngIf="episodio.extension">
+													<i class="fa fa-television" title="Resolución"></i>
+													<span style="font-size: 11px;" [title]="episodio.resolucionDetalle">{{episodio.resolucionTexto}}</span>
+													&nbsp;
+												</span>
+												<span class="pull-right" *ngIf="episodio.extension">
+													<i class="fa fa-clock-o" title="Duración"></i>
+													<span style="font-size: 11px;" [title]="episodio.duracionDetalle">{{episodio.duracionTexto}}</span>
+													&nbsp;
+												</span>
+												<span class="pull-right" *ngIf="episodio.extension">
+													<i class="fa fa-video-camera" title="Fuente"></i>
+													<span style="font-size: 11px;" [title]="episodio.fuente">{{episodio.fuente}}</span>
+													&nbsp;
+												</span>
+
+												<span class="pull-right" *ngIf="episodio.extension">
+													<i class="fa fa-calendar" title="Año"></i>
+													<span style="font-size: 11px;" [title]="episodio.anoTexto">{{episodio.anoTexto}}</span>
+													&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												</span>
+												<span class="pull-right" *ngIf="episodio.extension">
+													<i class="fa fa-film" title="Medio"></i>
+													<span style="font-size: 11px;" [title]="episodio.medioTexto">{{episodio.medioTexto}}</span>
+													&nbsp;
+												</span>
+
+											</div>
+											<div class="panel-body">
+												{{episodio.sinopsis}}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<div *ngIf="serie" class="modal inmodal" id="modalSaga" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content animated flipInY">
+			<form [formGroup]="formaSaga">
+				<div class="modal-header">
+					<h4 class="modal-title">Nueva Saga</h4>
+					<small class="font-bold">Agregando una saga para la serie {{serie.titulo.titulo}}.</small>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="form-group col-xs-3 col-sm-3 col-md-3 col-lg-3" [class.has-error]="formaSaga.controls['numero'].errors?.required && formaSaga.controls['numero'].dirty">
+							<label class="control-label">Número</label>
+							<input type="number" placeholder="Número" class="form-control" formControlName="numero" (keyup.enter)="agregarSaga()" />
+							<div class="help-block" *ngIf="formaSaga.controls['numero'].errors?.required">
+								Requerido
+							</div>
+						</div>
+						<div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9" [class.has-error]="formaSaga.controls['titulo'].errors?.required && formaSaga.controls['titulo'].dirty">
+							<label class="control-label">Título</label>
+							<input type="text" placeholder="Título" class="form-control" formControlName="titulo" (keyup.enter)="agregarSaga()" />
+							<div class="help-block" *ngIf="formaSaga.controls['titulo'].errors?.required">
+								Este campo es requerido
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal" [disabled]="!formaSaga.valid" (click)="agregarSaga()">Guardar</button>
+				</div>
+				<div class="modal-footer">
+					<div class="row">
+						<div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+							<div class="widget style1" [class.navy-bg]="formaSaga.status=='VALID'" [class.red-bg]="formaSaga.status=='INVALID'" [class.yellow-bg]="formaSaga.status=='INVALID'">
+								<div class="row">
+									<div class="col-xs-4">
+										<span>Título</span>
+										<h4 class="font-bold">{{formaSaga.status}}</h4>
+									</div>
+									<div class="col-xs-8 text-right">
+										<button type="button" class="btn btn-xs" [class.btn-info]="formaSaga.status=='VALID'" [class.btn-danger]="formaSaga.status=='INVALID'"
+										 [class.btn-warning]="formaSaga.status=='PENDING'" (click)="verFormaSaga()">
+											<i class="fa fa-eye"></i>&nbsp;Ver Forma</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div *ngIf="sagaSeleccionada" class="modal inmodal" id="modalEpisodio" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content animated flipInY">
+			<div class="modal-header">
+				<h4 class="modal-title">Nuevo Episodio</h4>
+				<small class="font-bold">Agregando un episodio para la saga {{sagaSeleccionada.titulo}}.</small>
+			</div>
+			<div class="modal-body">
+				<div class="tabs-container">
+					<ul class="nav nav-tabs">
+						<li class="active">
+							<a data-toggle="tab" href="#tabArchivos" aria-expanded="true">Archivos</a>
+						</li>
+						<li class="">
+							<a data-toggle="tab" href="#tabManual" aria-expanded="false">Manual</a>
+						</li>
+					</ul>
+					<div class="tab-content">
+						<div id="tabArchivos" class="tab-pane active">
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-md-12">
+										<input id="archivos" type="file" multiple/>
+									</div>
+								</div>
+								<form [formGroup]="formaEpisodio">
+									<div class="row">
+										<div class="form-group  col-md-2" [class.has-error]="formaEpisodio.controls['censura'].errors?.required && formaEpisodio.controls['censura'].dirty">
+											<label class="control-label">Censura</label>
+											<select formControlName="censura" class="form-control">
+												<option value="">Elegir...</option>
+												<option *ngFor="let censura of listaEpisodioCensuras" [ngValue]="censura.codigo">{{censura.nombre}}</option>
+											</select>
+											<div class="help-block" *ngIf="formaEpisodio.controls['censura'].errors?.required">
+												Requerido
+											</div>
+										</div>
+										<div class="form-group col-md-6">
+											<label class="control-label">Visto</label>
+											<br>
+											<input id="selectorEpisodioVisto" type="checkbox" checked data-toggle="toggle" data-on="Si" data-off="No" data-onstyle="success"
+											 data-offstyle="danger">
+										</div>
+									</div>
+								</form>
+								<div class="row">
+									<div class="form-group col-md-4">
+										<legend>Fansub</legend>
+										<rl-tag-input [(ngModel)]="listaFansubsSeleccionadosNombre" [autocomplete]="true" [autocompleteItems]="listaFansubsExistentesNombre"
+										 [autocompleteMustMatch]="false" [autocompleteSelectFirstItem]="true" placeholder="Ingresa fansub" (addTag)="agregarFansub($event)"
+										 (removeTag)="eliminarFansub($event)"></rl-tag-input>
+									</div>
+									<div class="form-group col-md-4">
+										<legend>Audio</legend>
+										<rl-tag-input [(ngModel)]="listaAudiosSeleccionadosNombre" [autocomplete]="true" [autocompleteItems]="listaAudiosExistentesNombre"
+										 [autocompleteMustMatch]="true" [autocompleteSelectFirstItem]="true" placeholder="Ingresa Audio" (addTag)="agregarAudio($event)"
+										 (removeTag)="eliminarAudio($event)"></rl-tag-input>
+									</div>
+									<div class="form-group col-md-4">
+										<legend>Subtítulos</legend>
+										<rl-tag-input [(ngModel)]="listaSubtitulosSeleccionadosNombre" [autocomplete]="true" [autocompleteItems]="listaSubtitulosExistentesNombre"
+										 [autocompleteMustMatch]="true" [autocompleteSelectFirstItem]="true" placeholder="Ingresa Subtítulo" (addTag)="agregarSubtitulo($event)"
+										 (removeTag)="eliminarSubtitulo($event)"></rl-tag-input>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12 text-right">
+										<button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+										<button type="button" class="btn btn-primary btn-sm" (click)="cargarVideos()">
+											<i class="fa fa-upload"></i>&nbsp;Cargar Videos
+										</button>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+										<div class="widget style1" [class.navy-bg]="formaEpisodio.status=='VALID'" [class.red-bg]="formaEpisodio.status=='INVALID'"
+										 [class.yellow-bg]="formaEpisodio.status=='INVALID'">
+											<div class="row">
+												<div class="col-xs-4">
+													<span>Título</span>
+													<h4 class="font-bold">{{formaEpisodio.status}}</h4>
+												</div>
+												<div class="col-xs-8 text-right">
+													<button type="button" class="btn btn-xs" [class.btn-info]="formaEpisodio.status=='VALID'" [class.btn-danger]="formaEpisodio.status=='INVALID'"
+													 [class.btn-warning]="formaEpisodio.status=='PENDING'" (click)="verFormaEpisodio()">
+														<i class="fa fa-eye"></i>&nbsp;Ver Forma</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="tabManual" class="tab-pane" *ngIf="registroId">
+							<div class="panel-body">
+								<form [formGroup]="formaEpisodioManual">
+									<div class="row">
+										<div class="form-group col-md-2" [class.has-error]="formaEpisodioManual.controls['numero'].errors?.required && formaEpisodioManual.controls['numero'].dirty">
+											<label class="control-label">No.</label>
+											<input type="number" placeholder="No." class="form-control" formControlName="numero" (keyup.enter)="guardarEpisodio()" />
+											<div class="help-block" *ngIf="formaEpisodioManual.controls['numero'].errors?.required">
+												Requerido
+											</div>
+										</div>
+										<div class="form-group col-md-10" [class.has-error]="formaEpisodioManual.controls['titulo'].errors?.required && formaEpisodioManual.controls['titulo'].dirty">
+											<label class="control-label">Título</label>
+											<input type="text" placeholder="Título" class="form-control" formControlName="titulo" (keyup.enter)="guardarEpisodio()" />
+											<div class="help-block" *ngIf="formaEpisodioManual.controls['titulo'].errors?.required">
+												Este campo es requerido
+											</div>
+										</div>
+									</div>
+								</form>
+								<div class="row">
+									<div class="col-md-12 text-right">
+										<button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+										<button type="button" class="btn btn-primary" data-dismiss="modal" [disabled]="!formaEpisodioManual.valid" (click)="guardarEpisodio()">Guardar</button>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+										<div class="widget style1" [class.navy-bg]="formaEpisodioManual.status=='VALID'" [class.red-bg]="formaEpisodioManual.status=='INVALID'"
+										 [class.yellow-bg]="formaEpisodioManual.status=='INVALID'">
+											<div class="row">
+												<div class="col-xs-4">
+													<span>Título</span>
+													<h4 class="font-bold">{{formaEpisodioManual.status}}</h4>
+												</div>
+												<div class="col-xs-8 text-right">
+													<button type="button" class="btn btn-xs" [class.btn-info]="formaEpisodioManual.status=='VALID'" [class.btn-danger]="formaEpisodioManual.status=='INVALID'"
+													 [class.btn-warning]="formaEpisodioManual.status=='PENDING'" (click)="verFormaEpisodio()">
+														<i class="fa fa-eye"></i>&nbsp;Ver Forma</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<div class="row">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

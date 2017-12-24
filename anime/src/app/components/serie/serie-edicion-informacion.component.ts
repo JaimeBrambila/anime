@@ -3,24 +3,22 @@ import { BaseComponent } from './../../components/comunes/base/base.component';
 import { Lista } from '../../clases/comunes';
 import { FormControl, FormGroup, FormArray, Validators } from "@angular/forms";
 import { OnRatingChangeEven, OnHoverRatingChangeEvent } from "angular-star-rating";
-import { } from "angular2-tag-input";
 import { CalificacionPipe } from "../../pipes/calificacion-pipe";
-import { Observable } from "rxjs/Rx";
 import { Serie } from '../../model/serie';
 import { Creador } from '../../model/creador';
 import { Cronologia } from '../../model/cronologia';
 import { Genero } from '../../model/genero';
 import { Tema } from '../../model/tema';
 import { Pais } from '../../model/pais';
-import { SerieTitulo } from '../../model/serie-titulo';
+import { Titulo } from '../../model/titulo';
 
 
 @Component({
-	selector: 'app-serie-informacion',
-	templateUrl: './serie-informacion.component.html',
+	selector: 'app-serie-edicion-informacion',
+	templateUrl: './serie-edicion-informacion.component.html',
 	styles: []
 })
-export class SerieInformacionComponent extends BaseComponent implements OnInit {
+export class SerieEdicionInformacionComponent extends BaseComponent implements OnInit {
 
 	@Input() registroId: string;
 
@@ -28,10 +26,10 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 	public formaSerie: FormGroup;
 	public pais: Pais;
 	public calificacion: number = 0;
-	public listaTitulos: SerieTitulo[] = [];
+	public listaTitulos: Titulo[] = [];
 	public listaPaises: Pais[];
-	public listaCronologias: Cronologia[];
-	public listaSeries: Serie[];
+	public listaCronologias: { value: string, label: string }[];
+	public listaSeries: { value: string, label: string }[];
 	public calificacionTemporal: number = 0;
 	public calificacionClase: string = 'badge';
 
@@ -54,7 +52,7 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 
 	constructor(
 		private injector: Injector,
-		private calificacionPipe: CalificacionPipe
+		private calificacionPipe: CalificacionPipe,
 	) {
 		super(injector);
 	}
@@ -92,7 +90,6 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 			'seriePaisId': new FormControl('', Validators.required),
 			'serieAno': new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(4), Validators.min(1907), Validators.max(2100)]),
 		});
-		// this.forma.get('codigo').setAsyncValidators(Serie.validadorExisteCodigo);
 	}
 
 	/**
@@ -110,17 +107,16 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 			'calificacion': new FormControl(''),
 			'cronologiaId': new FormControl(''),
 			'cronologiaSerieId': new FormControl(''),
-			'episodios': new FormControl('', Validators.required),
+			'episodiosTotales': new FormControl('', Validators.required),
 			'episodiosVistos': new FormControl('', Validators.required),
-			'ovas': new FormControl('', Validators.required),
+			'ovasTotales': new FormControl('', Validators.required),
 			'ovasVistas': new FormControl('', Validators.required),
-			'peliculas': new FormControl('', Validators.required),
+			'peliculasTotales': new FormControl('', Validators.required),
 			'peliculasVistas': new FormControl('', Validators.required),
-			'extras': new FormControl('', Validators.required),
+			'extrasTotales': new FormControl('', Validators.required),
 			'extrasVistos': new FormControl('', Validators.required),
 			'sinopsis': new FormControl('')
 		});
-		// this.forma.get('codigo').setAsyncValidators(Serie.validadorExisteCodigo);
 	}
 
 	/**
@@ -133,12 +129,11 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 			console.log(`[${nombreMetodo}] RegistroId: ${this.registroId}`);
 			if (this.registroId) {
 				console.log(`[${nombreMetodo}] Editando serie`);
-				this.rest.obtenerItem(this.environment.TABLAS.SERIE, this.registroId).then((respuesta) => {
-					console.log(`[${nombreMetodo}] Item encontrado...`, respuesta);
+				this.rest.obtenerSeriePorId(this.registroId).then((respuesta) => {
 					let serie = new Serie(respuesta);
 					// Titulos
-					this.listaTitulos = SerieTitulo.arreglo(serie.serieTitulos);
-					delete serie.serieTitulos;
+					this.listaTitulos = Titulo.arreglo(serie.titulos);
+					delete serie.titulos;
 					// Creadores
 					serie.creadores.forEach((creador) => {
 						this.listaCreadoresSeleccionadosNombre.push(creador.nombre);
@@ -168,7 +163,7 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 				console.log(`[${nombreMetodo}] Creando serie`);
 				let serie = new Serie();
 				this.calificacion = serie.calificacion;
-				delete serie.serieTitulos;
+				delete serie.titulos;
 				delete serie.pais;
 				delete serie.creadores;
 				delete serie.cronologia;
@@ -192,14 +187,14 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 			this.pais = Lista.obtenerItem(this.listaPaises, 'id', this.formaTitulo.get('seriePaisId').value);
 			this.formaSerie.get('paisId').setValue(this.pais.id);
 			this.formaSerie.get('ano').setValue(this.formaTitulo.get('serieAno').value);
-			let titulo = new SerieTitulo(this.formaTitulo.value);
+			let titulo = new Titulo(this.formaTitulo.value);
 			titulo.serieId = this.formaSerie.get('id').value;
 			titulo.pais = Lista.obtenerItem(this.listaPaises, 'id', titulo.paisId);
 			if (this.listaTitulos.length == 0) {
 				let serie = new Serie(this.formaSerie.value);
-				this.rest.insertarItem(this.environment.TABLAS.SERIE, serie).then(() => {
+				this.rest.insertarItem(this.environment.REST.TABLAS.SERIE, serie).then(() => {
 					console.log(`[${nombreMetodo}] Titulo agregado correctamente...`);
-					this.rest.insertarItem(this.environment.TABLAS.SERIE_TITULOS, titulo).then(() => {
+					this.rest.insertarItem(this.environment.REST.TABLAS.TITULO, titulo).then(() => {
 						console.log(`[${nombreMetodo}] Serie creada correctamente...`);
 						this.listaTitulos.push(titulo);
 						this.formaTitulo.get('titulo').setValue('');
@@ -207,6 +202,7 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 						this.formaTitulo.markAsPristine();
 						this.inicializarCamposSerie();
 						this.loader.cerrar();
+						this.router.navigate(['/app/series/editar', serie.id]);
 					}).catch((error) => {
 						console.log(`[${nombreMetodo}] Error al crear el titulo: `, error);
 					});
@@ -214,7 +210,7 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 					console.log(`[${nombreMetodo}] Error al crear la serie: `, error);
 				});
 			} else {
-				this.rest.insertarItem(this.environment.TABLAS.SERIE_TITULOS, titulo).then(() => {
+				this.rest.insertarItem(this.environment.REST.TABLAS.TITULO, titulo).then(() => {
 					console.log(`[${nombreMetodo}] Titulo agregado correctamente...`);
 					this.listaTitulos.push(titulo);
 					this.formaTitulo.get('titulo').setValue('');
@@ -236,7 +232,7 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 		console.log(`[${nombreMetodo}] Eliminando titulo...`);
 		this.loader.abrir();
 		let titulo = this.listaTitulos.splice(indice, 1)[0];
-		this.rest.eliminarItem(this.environment.TABLAS.SERIE_TITULOS, 'id', titulo.id).then(() => {
+		this.rest.eliminarItem(this.environment.REST.TABLAS.TITULO, 'id', titulo.id).then(() => {
 			this.loader.cerrar();
 		});
 	}
@@ -303,9 +299,9 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 			console.log(`[${nombreMetodo}] No existe el creador.`);
 			let creadorNuevo = new Creador();
 			creadorNuevo.nombre = creadorNombre;
-			this.rest.insertarItem(this.environment.TABLAS.CREADOR, creadorNuevo).then(() => {
+			this.rest.insertarItem(this.environment.REST.TABLAS.CREADOR, creadorNuevo).then(() => {
 				let serieCreador = { serieId: serie.id, creadorId: creadorNuevo.id };
-				this.rest.insertarItem(this.environment.TABLAS.SERIE_CREADORES, serieCreador).then(() => {
+				this.rest.insertarItem(this.environment.REST.TABLAS.SERIE_CREADORES, serieCreador).then(() => {
 					console.log(`[${nombreMetodo}] Creador agregado correctamente.`);
 					this.listaCreadoresNuevos.push(creadorNuevo);
 					this.loader.cerrar();
@@ -313,7 +309,7 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 			});
 		} else {
 			let serieCreador = { serieId: serie.id, creadorId: creadorExistente.id };
-			this.rest.insertarItem(this.environment.TABLAS.SERIE_CREADORES, serieCreador).then(() => {
+			this.rest.insertarItem(this.environment.REST.TABLAS.SERIE_CREADORES, serieCreador).then(() => {
 				console.log(`[${nombreMetodo}] Creador agregado correctamente.`);
 				this.loader.cerrar();
 			});
@@ -330,8 +326,8 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 		let serie = new Serie(this.formaSerie.value);
 		let creadorNuevo = Lista.obtenerItem(this.listaCreadoresNuevos, 'nombre', creadorNombre);
 		if (creadorNuevo) {
-			this.rest.eliminarAnd(this.environment.TABLAS.SERIE_CREADORES, 'serieId', serie.id, 'creadorId', creadorNuevo.id).then(() => {
-				this.rest.eliminarItem(this.environment.TABLAS.CREADOR, 'id', creadorNuevo.id).then(() => {
+			this.rest.eliminarItemsAnd(this.environment.REST.TABLAS.SERIE_CREADORES, 'serieId', serie.id, 'creadorId', creadorNuevo.id).then(() => {
+				this.rest.eliminarItem(this.environment.REST.TABLAS.CREADOR, 'id', creadorNuevo.id).then(() => {
 					this.listaCreadoresNuevos.splice(this.listaCreadoresNuevos.indexOf(creadorNuevo), 1);
 					this.loader.cerrar();
 					console.log(`[${nombreMetodo}] Creador eliminado correctamente.`);
@@ -339,7 +335,7 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 			});
 		} else {
 			let creadorExistente = Lista.obtenerItem(this.listaCreadoresExistentes, 'nombre', creadorNombre);
-			this.rest.eliminarAnd(this.environment.TABLAS.SERIE_CREADORES, 'serieId', serie.id, 'creadorId', creadorExistente.id).then(() => {
+			this.rest.eliminarItemsAnd(this.environment.REST.TABLAS.SERIE_CREADORES, 'serieId', serie.id, 'creadorId', creadorExistente.id).then(() => {
 				this.loader.cerrar();
 				console.log(`[${nombreMetodo}] Creador eliminado correctamente.`);
 			});
@@ -359,9 +355,9 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 			console.log(`[${nombreMetodo}] No existe el genero.`);
 			let generoNuevo = new Genero();
 			generoNuevo.nombre = generoNombre;
-			this.rest.insertarItem(this.environment.TABLAS.GENERO, generoNuevo).then(() => {
+			this.rest.insertarItem(this.environment.REST.TABLAS.GENERO, generoNuevo).then(() => {
 				let serieGenero = { serieId: serie.id, generoId: generoNuevo.id };
-				this.rest.insertarItem(this.environment.TABLAS.SERIE_GENEROS, serieGenero).then(() => {
+				this.rest.insertarItem(this.environment.REST.TABLAS.SERIE_GENEROS, serieGenero).then(() => {
 					console.log(`[${nombreMetodo}] Genero agregado correctamente.`);
 					this.listaGenerosNuevos.push(generoNuevo);
 					this.loader.cerrar();
@@ -369,7 +365,7 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 			});
 		} else {
 			let serieGenero = { serieId: serie.id, generoId: generoExistente.id };
-			this.rest.insertarItem(this.environment.TABLAS.SERIE_GENEROS, serieGenero).then(() => {
+			this.rest.insertarItem(this.environment.REST.TABLAS.SERIE_GENEROS, serieGenero).then(() => {
 				console.log(`[${nombreMetodo}] Genero agregado correctamente.`);
 				this.loader.cerrar();
 			});
@@ -386,8 +382,8 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 		let serie = new Serie(this.formaSerie.value);
 		let generoNuevo = Lista.obtenerItem(this.listaGenerosNuevos, 'nombre', generoNombre);
 		if (generoNuevo) {
-			this.rest.eliminarAnd(this.environment.TABLAS.SERIE_GENEROS, 'serieId', serie.id, 'generoId', generoNuevo.id).then(() => {
-				this.rest.eliminarItem(this.environment.TABLAS.GENERO, 'id', generoNuevo.id).then(() => {
+			this.rest.eliminarItemsAnd(this.environment.REST.TABLAS.SERIE_GENEROS, 'serieId', serie.id, 'generoId', generoNuevo.id).then(() => {
+				this.rest.eliminarItem(this.environment.REST.TABLAS.GENERO, 'id', generoNuevo.id).then(() => {
 					this.listaGenerosNuevos.splice(this.listaGenerosNuevos.indexOf(generoNuevo), 1);
 					this.loader.cerrar();
 					console.log(`[${nombreMetodo}] Genero eliminado correctamente.`);
@@ -395,7 +391,7 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 			});
 		} else {
 			let generoExistente = Lista.obtenerItem(this.listaGenerosExistentes, 'nombre', generoNombre);
-			this.rest.eliminarAnd(this.environment.TABLAS.SERIE_GENEROS, 'serieId', serie.id, 'generoId', generoExistente.id).then(() => {
+			this.rest.eliminarItemsAnd(this.environment.REST.TABLAS.SERIE_GENEROS, 'serieId', serie.id, 'generoId', generoExistente.id).then(() => {
 				this.loader.cerrar();
 				console.log(`[${nombreMetodo}] Genero eliminado correctamente.`);
 			});
@@ -415,9 +411,9 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 			console.log(`[${nombreMetodo}] No existe el tema.`);
 			let temaNuevo = new Tema();
 			temaNuevo.nombre = temaNombre;
-			this.rest.insertarItem(this.environment.TABLAS.TEMA, temaNuevo).then(() => {
+			this.rest.insertarItem(this.environment.REST.TABLAS.TEMA, temaNuevo).then(() => {
 				let serieTema = { serieId: serie.id, temaId: temaNuevo.id };
-				this.rest.insertarItem(this.environment.TABLAS.SERIE_TEMAS, serieTema).then(() => {
+				this.rest.insertarItem(this.environment.REST.TABLAS.SERIE_TEMAS, serieTema).then(() => {
 					console.log(`[${nombreMetodo}] Tema agregado correctamente.`);
 					this.listaTemasNuevos.push(temaNuevo);
 					this.loader.cerrar();
@@ -425,7 +421,7 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 			});
 		} else {
 			let serieTema = { serieId: serie.id, temaId: temaExistente.id };
-			this.rest.insertarItem(this.environment.TABLAS.SERIE_TEMAS, serieTema).then(() => {
+			this.rest.insertarItem(this.environment.REST.TABLAS.SERIE_TEMAS, serieTema).then(() => {
 				console.log(`[${nombreMetodo}] Tema agregado correctamente.`);
 				this.loader.cerrar();
 			});
@@ -442,8 +438,8 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 		let serie = new Serie(this.formaSerie.value);
 		let temaNuevo = Lista.obtenerItem(this.listaTemasNuevos, 'nombre', temaNombre);
 		if (temaNuevo) {
-			this.rest.eliminarAnd(this.environment.TABLAS.SERIE_TEMAS, 'serieId', serie.id, 'temaId', temaNuevo.id).then(() => {
-				this.rest.eliminarItem(this.environment.TABLAS.TEMA, 'id', temaNuevo.id).then(() => {
+			this.rest.eliminarItemsAnd(this.environment.REST.TABLAS.SERIE_TEMAS, 'serieId', serie.id, 'temaId', temaNuevo.id).then(() => {
+				this.rest.eliminarItem(this.environment.REST.TABLAS.TEMA, 'id', temaNuevo.id).then(() => {
 					this.listaTemasNuevos.splice(this.listaTemasNuevos.indexOf(temaNuevo), 1);
 					this.loader.cerrar();
 					console.log(`[${nombreMetodo}] Tema eliminado correctamente.`);
@@ -451,7 +447,7 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 			});
 		} else {
 			let temaExistente = Lista.obtenerItem(this.listaTemasExistentes, 'nombre', temaNombre);
-			this.rest.eliminarAnd(this.environment.TABLAS.SERIE_TEMAS, 'serieId', serie.id, 'temaId', temaExistente.id).then(() => {
+			this.rest.eliminarItemsAnd(this.environment.REST.TABLAS.SERIE_TEMAS, 'serieId', serie.id, 'temaId', temaExistente.id).then(() => {
 				this.loader.cerrar();
 				console.log(`[${nombreMetodo}] Tema eliminado correctamente.`);
 			});
@@ -468,10 +464,10 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 			if ($('#sinopsis').length) {
 				$('#sinopsis').html(this.formaSerie.get('sinopsis').value);
 				this.sinopsis = new window['Quill']('#sinopsis', { theme: 'snow' });
-				$('#selectCronologia').select2({ placeholder: 'Elegir cronología', allowClear: true });
-				$('#selectCronologiaSerie').select2({ placeholder: 'Elegir serie relacionada' });
 			}
-			$('#ano').mask('0000');
+			if ($('#ano').length) {
+				$('#ano').mask('0000');
+			}
 		}, 500);
 	}
 
@@ -485,7 +481,7 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 		let promesas: Promise<any>[] = [];
 		let serie = new Serie(this.formaSerie.value);
 		serie.sinopsis = (<any>$('#sinopsis')[0].firstChild).innerHTML;
-		promesas.push(this.rest.actualizarItem(this.environment.TABLAS.SERIE, serie));
+		promesas.push(this.rest.actualizarItem(this.environment.REST.TABLAS.SERIE, serie));
 		Promise.all(promesas).then(() => {
 			this.loader.cerrar();
 			this.swal.guardarExito();
@@ -501,7 +497,7 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 		console.log(`[${nombreMetodo}] Obteniendo creadores...`);
 		return new Promise<any>((resolve, reject) => {
 			this.listaCreadoresExistentesNombre = [];
-			this.rest.obtenerTodosLosItems(this.environment.TABLAS.CREADOR).then((resultado) => {
+			this.rest.obtenerTodosLosItems(this.environment.REST.TABLAS.CREADOR).then((resultado) => {
 				this.listaCreadoresExistentes = Lista.ordenar(Creador.arreglo(resultado), 'nombre');
 				this.listaCreadoresExistentes.forEach((creador) => {
 					this.listaCreadoresExistentesNombre.push(creador.nombre);
@@ -519,7 +515,7 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 		console.log(`[${nombreMetodo}] Obteniendo generos...`);
 		return new Promise<any>((resolve, reject) => {
 			this.listaGenerosExistentesNombre = [];
-			this.rest.obtenerTodosLosItems(this.environment.TABLAS.GENERO).then((resultado) => {
+			this.rest.obtenerTodosLosItems(this.environment.REST.TABLAS.GENERO).then((resultado) => {
 				this.listaGenerosExistentes = Lista.ordenar(Genero.arreglo(resultado), 'nombre');
 				this.listaGenerosExistentes.forEach((genero) => {
 					this.listaGenerosExistentesNombre.push(genero.nombre);
@@ -537,7 +533,7 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 		console.log(`[${nombreMetodo}] Obteniendo temas...`);
 		return new Promise<any>((resolve, reject) => {
 			this.listaTemasExistentesNombre = [];
-			this.rest.obtenerTodosLosItems(this.environment.TABLAS.TEMA).then((resultado) => {
+			this.rest.obtenerTodosLosItems(this.environment.REST.TABLAS.TEMA).then((resultado) => {
 				this.listaTemasExistentes = Lista.ordenar(Tema.arreglo(resultado), 'nombre');
 				this.listaTemasExistentes.forEach((tema) => {
 					this.listaTemasExistentesNombre.push(tema.nombre);
@@ -554,8 +550,12 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 		let nombreMetodo = 'inicializarListaSeries';
 		console.log(`[${nombreMetodo}] Obteniendo series...`);
 		return new Promise<any>((resolve, reject) => {
-			this.rest.obtenerTodosLosItems(this.environment.TABLAS.SERIE).then((resultado) => {
-				this.listaSeries = Serie.arreglo(resultado);
+			this.listaSeries = [];
+			this.rest.obtenerSeries().then((resultado) => {
+				let lista = Serie.arreglo(resultado);
+				lista.forEach((item) => {
+					this.listaSeries.push({ value: item.id, label: item.titulo.titulo });
+				})
 				resolve();
 			});
 		});
@@ -568,8 +568,12 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 		let nombreMetodo = 'inicializarListaCronologias';
 		console.log(`[${nombreMetodo}] Obteniendo cronologias...`);
 		return new Promise<any>((resolve, reject) => {
-			this.rest.obtenerTodosLosItems(this.environment.TABLAS.CRONOLOGIA).then((resultado) => {
-				this.listaCronologias = Lista.ordenar(Cronologia.arreglo(resultado), 'nombre');
+			this.listaCronologias = [];
+			this.rest.obtenerTodosLosItems(this.environment.REST.TABLAS.CRONOLOGIA).then((resultado) => {
+				let lista = Lista.ordenar(Cronologia.arreglo(resultado), 'nombre');
+				lista.forEach((item) => {
+					this.listaCronologias.push({ value: item.id, label: item.nombre });
+				})
 				resolve();
 			});
 		});
@@ -582,7 +586,7 @@ export class SerieInformacionComponent extends BaseComponent implements OnInit {
 		let nombreMetodo = 'inicializarListaPaises';
 		console.log(`[${nombreMetodo}] Obteniendo paises...`);
 		return new Promise<any>((resolve, reject) => {
-			this.rest.obtenerTodosLosItems(this.environment.TABLAS.PAIS).then((resultado) => {
+			this.rest.obtenerTodosLosItems(this.environment.REST.TABLAS.PAIS).then((resultado) => {
 				this.listaPaises = Lista.ordenar(Pais.arreglo(resultado), 'nombre');
 				resolve();
 			});

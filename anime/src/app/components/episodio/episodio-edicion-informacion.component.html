@@ -1,0 +1,200 @@
+<div class="row">
+	<div class="col-lg-12 text-right">
+		<button class="btn btn-success " type="button" (click)="guardar()">
+			<i class="fa fa-floppy-o"></i>&nbsp;Guardar</button>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg-12">
+		<legend>Desarrollo</legend>
+		<div class="row">
+			<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">
+				<div class="widget style1" [class.navy-bg]="forma.status=='VALID'" [class.red-bg]="forma.status=='INVALID'" [class.yellow-bg]="forma.status=='INVALID'">
+					<div class="row">
+						<div class="col-xs-4">
+							<span>Título</span>
+							<h4 class="font-bold">{{forma.status}}</h4>
+						</div>
+						<div class="col-xs-8 text-right">
+							<button type="button" class="btn btn-xs" [class.btn-info]="forma.status=='VALID'" [class.btn-danger]="forma.status=='INVALID'"
+							 [class.btn-warning]="forma.status=='PENDING'" (click)="verFormaTitulo()">
+								<i class="fa fa-eye"></i>&nbsp;Ver Forma</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+
+		<form [formGroup]="forma">
+			<div class="row">
+				<div class="col-md-3">
+					<div class="row">
+						<div class="form-group col-md-6" [class.has-error]="forma.controls['numeroOrden'].errors?.required && forma.controls['numeroOrden'].dirty">
+							<label class="control-label">No. Órden</label>
+							<input type="number" placeholder="No." class="form-control" formControlName="numeroOrden" (keyup.enter)="agregarEpisodio()"
+							/>
+							<div class="help-block" *ngIf="forma.controls['numeroOrden'].errors?.required">
+								Requerido
+							</div>
+						</div>
+						<div class="form-group col-md-6" [class.has-error]="forma.controls['numero'].errors?.required && forma.controls['numero'].dirty">
+							<label class="control-label">No.</label>
+							<input type="number" placeholder="No." class="form-control" formControlName="numero" (keyup.enter)="agregarEpisodio()" />
+							<div class="help-block" *ngIf="forma.controls['numero'].errors?.required">
+								Requerido
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group col-md-2" [class.has-error]="forma.controls['ano'].errors?.required && forma.controls['ano'].dirty">
+					<label class="control-label">Año</label>
+					<input id="ano" type="text" placeholder="Año" class="form-control" formControlName="ano" />
+					<div class="help-block" *ngIf="forma.controls['ano'].errors?.required">
+						Requerido
+					</div>
+					<div class="help-block" *ngIf="forma.controls['ano'].errors?.minlength || forma.controls['ano'].errors?.maxlength">
+						4 Dígitos
+					</div>
+					<div class="help-block" *ngIf="!forma.controls['ano'].errors?.minlength && !forma.controls['ano'].errors?.maxlength&&(forma.controls['ano'].errors?.min || forma.controls['ano'].errors?.max)">
+						Inválido
+					</div>
+				</div>
+				<div class="form-group col-md-7" [class.has-error]="forma.controls['titulo'].errors?.required && forma.controls['titulo'].dirty">
+					<label class="control-label">Título</label>
+					<input type="text" placeholder="Título" class="form-control" formControlName="titulo" (keyup.enter)="agregarEpisodio()" />
+					<div class="help-block" *ngIf="forma.controls['titulo'].errors?.required">
+						Este campo es requerido
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="form-group  col-md-2" [class.has-error]="forma.controls['medio'].errors?.required && forma.controls['medio'].dirty">
+					<label class="control-label">Medio</label>
+					<select formControlName="medio" class="form-control">
+						<option value="">Elegir...</option>
+						<option *ngFor="let medio of listaEpisodioMedios" [ngValue]="medio.codigo">{{medio.nombre}}</option>
+					</select>
+					<div class="help-block" *ngIf="forma.controls['medio'].errors?.required">
+						Requerido
+					</div>
+				</div>
+				<div class="form-group  col-md-2" [class.has-error]="forma.controls['censura'].errors?.required && forma.controls['censura'].dirty">
+					<label class="control-label">Censura</label>
+					<select formControlName="censura" class="form-control">
+						<option value="">Elegir...</option>
+						<option *ngFor="let censura of listaEpisodioCensuras" [ngValue]="censura.codigo">{{censura.nombre}}</option>
+					</select>
+					<div class="help-block" *ngIf="forma.controls['censura'].errors?.required">
+						Requerido
+					</div>
+				</div>
+				<div class="form-group col-md-6">
+					<label class="control-label">Visto</label>
+					<br>
+					<input id="selectorEpisodioVisto" type="checkbox" checked data-toggle="toggle" data-on="Si" data-off="No" data-onstyle="success"
+					 data-offstyle="danger">
+				</div>
+			</div>
+			<div class="row">
+				<div class="form-group  col-md-2" [class.has-error]="forma.controls['fuente'].errors?.required && forma.controls['fuente'].dirty">
+					<label class="control-label">Fuente</label>
+					<select formControlName="fuente" class="form-control">
+						<option value="">Elegir...</option>
+						<option *ngFor="let fuente of listaEpisodioFuentes" [ngValue]="fuente.codigo">{{fuente.nombre}}</option>
+					</select>
+					<div class="help-block" *ngIf="forma.controls['fuente'].errors?.required">
+						Requerido
+					</div>
+				</div>
+				<div class="form-group col-md-2" [class.has-error]="forma.controls['crc'].errors?.required && forma.controls['crc'].dirty">
+					<label class="control-label">CRC</label>
+					<input id="crc" type="text" placeholder="CRC" class="form-control" formControlName="crc" />
+					<div class="help-block" *ngIf="forma.controls['crc'].errors?.required">
+						Requerido
+					</div>
+					<div class="help-block" *ngIf="forma.controls['crc'].errors?.minlength || forma.controls['crc'].errors?.maxlength">
+						8 Hexa [0-9|A-F]
+					</div>
+					<div class="help-block" *ngIf="!forma.controls['crc'].errors?.minlength && !forma.controls['crc'].errors?.maxlength&&(forma.controls['crc'].errors?.min || forma.controls['crc'].errors?.max)">
+						Inválido
+					</div>
+				</div>
+				<div class="form-group col-md-2" [class.has-error]="forma.controls['extension'].errors?.required && forma.controls['extension'].dirty">
+					<label class="control-label">Extensión</label>
+					<input id="extension" type="text" placeholder="Extensión" class="form-control" formControlName="extension" />
+					<div class="help-block" *ngIf="forma.controls['extension'].errors?.required">
+						Requerido
+					</div>
+				</div>
+				<div class="form-group col-md-2" [class.has-error]="forma.controls['duracion'].errors?.required && forma.controls['duracion'].dirty">
+					<label class="control-label">Duración</label>
+					<input type="number" placeholder="Duración" class="form-control" formControlName="duracion" />
+					<div class="help-block">
+						Segundos
+					</div>
+					<div class="help-block" *ngIf="forma.controls['duracion'].errors?.required">
+						Requerido
+					</div>
+				</div>
+				<div class="form-group col-md-2" [class.has-error]="forma.controls['tamano'].errors?.required && forma.controls['tamano'].dirty">
+					<label class="control-label">Tamaño</label>
+					<input type="number" placeholder="Tamaño" class="form-control" formControlName="tamano" />
+					<div class="help-block">
+						Bytes
+					</div>
+					<div class="help-block" *ngIf="forma.controls['tamano'].errors?.required">
+						Requerido
+					</div>
+				</div>
+				<div class="form-group col-md-2" [class.has-error]="forma.controls['resolucionHorizontal'].errors?.required && forma.controls['resolucionHorizontal'].dirty">
+					<label class="control-label">Resolución H</label>
+					<input type="number" placeholder="Resolución H" class="form-control" formControlName="resolucionHorizontal" />
+					<div class="help-block" *ngIf="forma.controls['resolucionHorizontal'].errors?.required">
+						Requerido
+					</div>
+				</div>
+				<div class="form-group col-md-2" [class.has-error]="forma.controls['resolucionVertical'].errors?.required && forma.controls['resolucionVertical'].dirty">
+					<label class="control-label">Resolución V</label>
+					<input type="number" placeholder="Resolución V" class="form-control" formControlName="resolucionVertical" />
+					<div class="help-block" *ngIf="forma.controls['resolucionVertical'].errors?.required">
+						Requerido
+					</div>
+				</div>
+			</div>
+		</form>
+		<div class="row">
+			<div class="form-group col-md-4">
+				<legend>Fansub</legend>
+				<rl-tag-input [(ngModel)]="listaFansubsSeleccionadosNombre" [autocomplete]="true" [autocompleteItems]="listaFansubsExistentesNombre"
+				 [autocompleteMustMatch]="false" [autocompleteSelectFirstItem]="true" placeholder="Ingresa fansub" (addTag)="agregarFansub($event)"
+				 (removeTag)="eliminarFansub($event)"></rl-tag-input>
+			</div>
+			<div class="form-group col-md-4">
+				<legend>Audio</legend>
+				<rl-tag-input [(ngModel)]="listaAudiosSeleccionadosNombre" [autocomplete]="true" [autocompleteItems]="listaAudiosExistentesNombre"
+				 [autocompleteMustMatch]="true" [autocompleteSelectFirstItem]="true" placeholder="Ingresa Audio" (addTag)="agregarAudio($event)"
+				 (removeTag)="eliminarAudio($event)"></rl-tag-input>
+			</div>
+			<div class="form-group col-md-4">
+				<legend>Subtítulos</legend>
+				<rl-tag-input [(ngModel)]="listaSubtitulosSeleccionadosNombre" [autocomplete]="true" [autocompleteItems]="listaSubtitulosExistentesNombre"
+				 [autocompleteMustMatch]="true" [autocompleteSelectFirstItem]="true" placeholder="Ingresa Subtítulo" (addTag)="agregarSubtitulo($event)"
+				 (removeTag)="eliminarSubtitulo($event)"></rl-tag-input>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg-12 text-right">
+		<button class="btn btn-success " type="button" (click)="guardar()">
+			<i class="fa fa-floppy-o"></i>&nbsp;Guardar</button>
+	</div>
+</div>

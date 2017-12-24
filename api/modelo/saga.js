@@ -9,12 +9,20 @@ module.exports = sequelize.define(CONFIGURACION.MODELO.SAGA,
             primaryKey: true,
             allowNull: false
         },
-        numero: {
-            type: Sequelize.DECIMAL,
+        tipo: {
+            type: Sequelize.STRING(CONFIGURACION.PROTOTIPOS.CADENA_CH),
             allowNull: false,
         },
-        titulo: {
-            type: Sequelize.STRING(CONFIGURACION.PROTOTIPOS.CADENA_CH),
+        numero: {
+            type: Sequelize.DECIMAL(10,3),
+            allowNull: false,
+        },
+        episodiosTotales: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+        },
+        episodiosVistos: {
+            type: Sequelize.INTEGER,
             allowNull: false,
         },
         titulo: {

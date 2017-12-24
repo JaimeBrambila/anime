@@ -23,27 +23,51 @@
 					<li class="active">
 						<a data-toggle="tab" href="#tabInformacion" aria-expanded="true"> Información</a>
 					</li>
-					<li class="">
+					<li *ngIf="registroId" class="">
+						<a data-toggle="tab" href="#tabPortada" aria-expanded="false">Portada</a>
+					</li>
+					<li *ngIf="registroId" class="">
 						<a data-toggle="tab" href="#tabEpisodios" aria-expanded="false">Episodios</a>
+					</li>
+					<li *ngIf="registroId" class="">
+						<a data-toggle="tab" href="#tabOvas" aria-expanded="false">OVA's</a>
+					</li>
+					<li *ngIf="registroId" class="">
+						<a data-toggle="tab" href="#tabPeliculas" aria-expanded="false">Películas</a>
+					</li>
+					<li *ngIf="registroId" class="">
+						<a data-toggle="tab" href="#tabExtras" aria-expanded="false">Extras</a>
 					</li>
 				</ul>
 				<div class="tab-content">
 					<div id="tabInformacion" class="tab-pane active">
 						<div class="panel-body">
-							<app-serie-informacion [registroId]="registroId"></app-serie-informacion>
+							<app-serie-edicion-informacion [registroId]="registroId"></app-serie-edicion-informacion>
 						</div>
 					</div>
-					<div id="tabEpisodios" class="tab-pane">
+					<div id="tabPortada" class="tab-pane" *ngIf="registroId">
 						<div class="panel-body">
-							<strong>Donec quam felis</strong>
-
-							<p>Thousand unknown plants are noticed by me: when I hear the buzz of the little world among the stalks, and grow familiar
-								with the countless indescribable forms of the insects and flies, then I feel the presence of the Almighty, who formed
-								us in his own image, and the breath </p>
-
-							<p>I am alone, and feel the charm of existence in this spot, which was created for the bliss of souls like mine. I am
-								so happy, my dear friend, so absorbed in the exquisite sense of mere tranquil existence, that I neglect my talents.
-								I should be incapable of drawing a single stroke at the present moment; and yet.</p>
+							<app-serie-edicion-portada [registroId]="registroId"></app-serie-edicion-portada>
+						</div>
+					</div>
+					<div id="tabEpisodios" class="tab-pane" *ngIf="registroId">
+						<div class="panel-body">
+							<app-serie-edicion-episodios [registroId]="registroId" [sagaTipo]="sagaTipoTv"></app-serie-edicion-episodios>
+						</div>
+					</div>
+					<div id="tabOvas" class="tab-pane" *ngIf="registroId">
+						<div class="panel-body">
+							<app-serie-edicion-episodios [registroId]="registroId" [sagaTipo]="sagaTipoOva"></app-serie-edicion-episodios>
+						</div>
+					</div>
+					<div id="tabPeliculas" class="tab-pane" *ngIf="registroId">
+						<div class="panel-body">
+							<app-serie-edicion-episodios [registroId]="registroId" [sagaTipo]="sagaTipoMovie"></app-serie-edicion-episodios>
+						</div>
+					</div>
+					<div id="tabExtras" class="tab-pane" *ngIf="registroId">
+						<div class="panel-body">
+							<app-serie-edicion-episodios [registroId]="registroId" [sagaTipo]="sagaTipoExtra"></app-serie-edicion-episodios>
 						</div>
 					</div>
 				</div>

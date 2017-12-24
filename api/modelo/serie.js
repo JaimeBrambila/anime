@@ -27,7 +27,7 @@ module.exports = sequelize.define(CONFIGURACION.MODELO.SERIE,
         calificacion: {
             type: Sequelize.INTEGER
         },
-        episodios: {
+        episodiosTotales: {
             type: Sequelize.INTEGER,
             allowNull: false
         },
@@ -35,7 +35,7 @@ module.exports = sequelize.define(CONFIGURACION.MODELO.SERIE,
             type: Sequelize.INTEGER,
             allowNull: false
         },
-        ovas: {
+        ovasTotales: {
             type: Sequelize.INTEGER,
             allowNull: false
         },
@@ -43,7 +43,7 @@ module.exports = sequelize.define(CONFIGURACION.MODELO.SERIE,
             type: Sequelize.INTEGER,
             allowNull: false
         },
-        peliculas: {
+        peliculasTotales: {
             type: Sequelize.INTEGER,
             allowNull: false
         },
@@ -51,7 +51,7 @@ module.exports = sequelize.define(CONFIGURACION.MODELO.SERIE,
             type: Sequelize.INTEGER,
             allowNull: false
         },
-        extras: {
+        extrasTotales: {
             type: Sequelize.INTEGER,
             allowNull: false
         },

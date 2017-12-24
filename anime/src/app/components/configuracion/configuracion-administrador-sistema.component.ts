@@ -41,13 +41,13 @@ export class ConfiguracionAdministradorSistemaComponent extends BaseComponent im
 		console.log(`[${nombreMetodo}] Guardando...`);
 		this.loader.abrir();
 		if (this.editando) {
-			this.rest.actualizarItem(this.environment.TABLAS.CONFIGURACION_SISTEMA, this.config).then(() => {
+			this.rest.actualizarItem(this.environment.REST.TABLAS.CONFIGURACION_SISTEMA, this.config).then(() => {
 				this.loader.cerrar();
 				this.swal.guardarExito();
 				this.router.navigateByUrl('/app/panel-control');
 			});
 		} else {
-			this.rest.insertarItem(this.environment.TABLAS.CONFIGURACION_SISTEMA, this.config).then(() => {
+			this.rest.insertarItem(this.environment.REST.TABLAS.CONFIGURACION_SISTEMA, this.config).then(() => {
 				this.loader.cerrar();
 				this.swal.guardarExito();
 				this.router.navigateByUrl('/app/panel-control');

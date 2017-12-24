@@ -2,19 +2,19 @@ const Sequelize = require('sequelize');
 const sequelize = require('../conexion');
 const CONFIGURACION = require('../configuracion');
 
-module.exports = sequelize.define(CONFIGURACION.MODELO.SAGA_EPISODIOS,
+module.exports = sequelize.define(CONFIGURACION.MODELO.EPISODIO_FANSUBS,
     {
-        sagaId: {
+        episodioId: {
             type: Sequelize.STRING(CONFIGURACION.PROTOTIPOS.UUID),
             allowNull: false
         },
-        episodioId: {
+        fansubId: {
             type: Sequelize.STRING(CONFIGURACION.PROTOTIPOS.UUID),
             allowNull: false
         }
     },
     {
-        tableName: CONFIGURACION.TABLAS.SAGA_EPISODIOS,
+        tableName: CONFIGURACION.TABLAS.EPISODIO_FANSUBS,
         timestamps: false,
         freezeTableName: true,
     }

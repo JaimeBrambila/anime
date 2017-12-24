@@ -19,9 +19,9 @@ export class PanelControlComponent {
 		this
 	}
 
-	public verTemas() {
-		this.rest.obtenerTodosLosItems('fansub').then((resultado) => {
-			this.listaTemas = Lista.ordenar(resultado,'nombre');
+	public verSagas() {
+		this.rest.obtenerItemsPorCampo('serie_sagas', 'serieId', '449571e0-50c4-45b3-8ae3-dc3d2760c299').then((resultado) => {
+			console.log(resultado);
 		});
 	}
 

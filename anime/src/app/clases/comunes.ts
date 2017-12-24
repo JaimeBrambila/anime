@@ -18,6 +18,19 @@ export class Lista {
 	}
 
 	/**
+	 * Ordena una lista por el atributo de ordenamiento numerico.
+	 */
+	public static ordenarNumeros(lista: any[], atributoOrdenamiento: string, invertir?: boolean) {
+		let listaOrdenada = lista.sort((a, b) => {
+			return ( Number(a[atributoOrdenamiento]) >  Number(b[atributoOrdenamiento])) ? 1 : ((  Number(b[atributoOrdenamiento]) >  Number(a[atributoOrdenamiento])) ? -1 : 0);
+		});
+		if (invertir) {
+			listaOrdenada = listaOrdenada.reverse();
+		}
+		return listaOrdenada;
+	}
+
+	/**
 	 * Ordena una lista por el atributo de ordenamiento.
 	 */
 	public static obtenerItem(lista: any[], atributoBusqueda: string, criterioBusqueda: any): any {
